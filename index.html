@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ITA Daily To-do Tool</title>
+  <meta name="description" content="Projektseite für das ITA Daily To-do Tool – eine Browser-Erweiterung für Jira Data Center mit gemeinsamer Tagesansicht über Aufträge, ReserWUtion und Events.">
+  <meta property="og:title" content="ITA Daily To-do Tool">
+  <meta property="og:description" content="Eine lokale Browser-Erweiterung, die Jira-Tickets aus mehreren Zeitfeldern in einer chronologischen Daily-Liste bündelt.">
+  <meta property="og:type" content="website">
+  <link rel="preconnect" href="https://api.fontshare.com">
+  <link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@500,700,800&f[]=satoshi@400,500,700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --page-bg: #f5f6f8;
+      --page-surface: #ffffff;
+      --page-border: #dde2e8;
+      --page-text: #172b4d;
+      --page-muted: #5e6c84;
+      --page-primary: #0052cc;
+      --page-primary-hover: #0747a6;
+      --page-soft: #deebff;
+      --page-shadow: 0 12px 34px rgba(9, 30, 66, 0.08);
+      --page-radius: 18px;
+
+      --bg: #f7f8fa;
+      --surface: #ffffff;
+      --surface-alt: #f1f3f5;
+      --border: #dfe1e6;
+      --text: #172b4d;
+      --text-muted: #5e6c84;
+      --primary: #0052cc;
+      --primary-hover: #0747a6;
+      --primary-soft: #deebff;
+      --danger-bg: #ffebe6;
+      --danger-text: #bf2600;
+      --warning-bg: #fff7d6;
+      --warning-text: #8d6b00;
+      --ok-bg: #e3fcef;
+      --ok-text: #006644;
+      --ticket-red: #8E1538;
+      --ticket-red-bg: #F6E8ED;
+      --ticket-gray: #5E6D84;
+      --ticket-gray-bg: #E9EDF2;
+      --ticket-default-bg: #EEF2F7;
+      --ticket-default-text: #42526E;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: 'Satoshi', Arial, sans-serif;
+      color: var(--page-text);
+      background:
+        radial-gradient(circle at top right, rgba(0, 82, 204, 0.07), transparent 28%),
+        linear-gradient(180deg, #f7f9fc 0%, #f4f5f7 100%);
+    }
+    a { color: inherit; text-decoration: none; }
+    img, svg { display: block; max-width: 100%; }
+    code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.95em;
+    }
+    .container {
+      width: min(1150px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(14px);
+      background: rgba(245, 246, 248, 0.84);
+      border-bottom: 1px solid rgba(9, 30, 66, 0.08);
+    }
+    .site-header .container {
+      min-height: 74px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 700;
+      font-size: 15px;
+    }
+    .brand-mark {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      color: var(--page-primary);
+      background: linear-gradient(180deg, #eff5ff 0%, #dce9ff 100%);
+      box-shadow: inset 0 0 0 1px rgba(0, 82, 204, 0.1);
+    }
+    .brand-mark svg { width: 22px; height: 22px; }
+    .nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .nav a {
+      padding: 10px 14px;
+      border-radius: 999px;
+      color: var(--page-muted);
+      font-size: 14px;
+    }
+    .nav a:hover {
+      background: #ebeff5;
+      color: var(--page-text);
+    }
+
+    .hero {
+      padding: 72px 0 56px;
+    }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.04fr 0.96fr;
+      gap: 36px;
+      align-items: center;
+    }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--page-primary);
+      background: #eaf2ff;
+      margin-bottom: 18px;
+    }
+    h1, h2, h3 {
+      font-family: 'Cabinet Grotesk', 'Satoshi', Arial, sans-serif;
+      letter-spacing: -0.03em;
+      line-height: 1.03;
+      margin: 0;
+    }
+    h1 {
+      font-size: clamp(2.8rem, 2rem + 3vw, 4.9rem);
+      max-width: 10ch;
+      margin-bottom: 18px;
+    }
+    .hero-copy p,
+    .section-intro,
+    .card p,
+    .card li {
+      color: var(--page-muted);
+      font-size: 17px;
+      line-height: 1.62;
+    }
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin: 24px 0 28px;
+    }
+    .btn {
+      min-height: 48px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 18px;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      font-size: 14px;
+      font-weight: 700;
+      transition: 180ms ease;
+    }
+    .btn-primary {
+      background: var(--page-primary);
+      color: #fff;
+      box-shadow: 0 8px 20px rgba(0, 82, 204, 0.16);
+    }
+    .btn-primary:hover { background: var(--page-primary-hover); }
+    .btn-secondary {
+      background: #fff;
+      border-color: var(--page-border);
+      color: var(--page-text);
+    }
+    .btn-secondary:hover { background: #f7f9fc; }
+    .signals {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+    .signal {
+      padding: 14px;
+      background: rgba(255,255,255,0.8);
+      border: 1px solid rgba(9, 30, 66, 0.08);
+      border-radius: 14px;
+      box-shadow: 0 3px 12px rgba(9, 30, 66, 0.03);
+    }
+    .signal strong {
+      display: block;
+      margin-bottom: 4px;
+      font-size: 14px;
+    }
+    .signal span {
+      color: var(--page-muted);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .preview-card {
+      background: linear-gradient(180deg, #ffffff 0%, #fbfcfe 100%);
+      border: 1px solid rgba(9, 30, 66, 0.08);
+      border-radius: 24px;
+      padding: 18px;
+      box-shadow: var(--page-shadow);
+      overflow: hidden;
+    }
+    .preview-caption {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding-bottom: 14px;
+      margin-bottom: 14px;
+      border-bottom: 1px solid rgba(9, 30, 66, 0.06);
+      font-size: 13px;
+      color: var(--page-muted);
+    }
+    .preview-caption strong { color: var(--page-text); }
+
+    .popup-shell {
+      width: 680px;
+      max-width: 100%;
+      min-height: 600px;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      background: var(--bg);
+      box-shadow: 0 16px 36px rgba(9, 30, 66, 0.12);
+    }
+    .popup-demo {
+      position: relative;
+      width: 100%;
+      min-height: 600px;
+      padding: 12px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      font-family: Arial, sans-serif;
+      color: var(--text);
+      background: var(--bg);
+    }
+    .header {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: start;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .header-copy { min-width: 0; }
+    .header h1 {
+      margin: 0;
+      max-width: none;
+      font-family: Arial, sans-serif;
+      font-size: 18px;
+      line-height: 1.2;
+      letter-spacing: 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .subtitle,
+    .meta-text {
+      margin: 4px 0 0;
+      color: var(--text-muted);
+      font-size: 12px;
+      line-height: 1.35;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .header-actions {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: nowrap;
+    }
+    .refresh-button,
+    .secondary-button,
+    .preset-button {
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text);
+      padding: 6px 10px;
+      border-radius: 6px;
+      cursor: default;
+      font-size: 12px;
+      line-height: 1.2;
+      white-space: nowrap;
+      flex: 0 0 auto;
+    }
+    .preset-bar {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+    }
+    .preset-button.is-active {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #ffffff;
+      font-weight: 700;
+      box-shadow: 0 0 0 2px rgba(0, 82, 204, 0.14);
+    }
+    .status-panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 12px;
+      margin-bottom: 12px;
+    }
+    #statusText {
+      margin: 0;
+      font-weight: 600;
+      font-size: 14px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .table-wrap {
+      position: relative;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      background: var(--surface);
+      flex: 1 1 auto;
+      min-height: 0;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+      font-family: Arial, sans-serif;
+    }
+    thead th {
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      background: var(--surface-alt);
+      text-align: left;
+      font-size: 12px;
+      padding: 10px;
+      border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    tbody td {
+      padding: 10px;
+      border-bottom: 1px solid var(--border);
+      font-size: 12px;
+      vertical-align: top;
+      overflow: hidden;
+    }
+    tbody tr:hover { background: #fafbfc; }
+    .done-head,
+    .done-cell { text-align: center; }
+    .status-badge,
+    .ticket-type-badge {
+      display: inline-block;
+      max-width: 100%;
+      padding: 4px 8px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 600;
+      line-height: 1.25;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .ticket-type-red {
+      background: var(--ticket-red-bg);
+      color: var(--ticket-red);
+    }
+    .ticket-type-gray {
+      background: var(--ticket-gray-bg);
+      color: var(--ticket-gray);
+    }
+    .ticket-type-default {
+      background: var(--ticket-default-bg);
+      color: var(--ticket-default-text);
+    }
+    .status-overdue {
+      background: var(--danger-bg);
+      color: var(--danger-text);
+    }
+    .status-upcoming {
+      background: var(--warning-bg);
+      color: var(--warning-text);
+    }
+    .status-normal {
+      background: var(--ok-bg);
+      color: var(--ok-text);
+    }
+    th:nth-child(1), td.done-cell { width: 8%; }
+    th:nth-child(2), td.time-cell { width: 21%; }
+    th:nth-child(3), td.ticket-type-cell { width: 19%; }
+    th:nth-child(4), td.key-cell { width: 11%; }
+    th:nth-child(5), td.status-cell { width: 15%; }
+    th:nth-child(6), td.summary-cell { width: 26%; }
+    .time-main,
+    .key-link,
+    .row-link {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: block;
+    }
+    .source-note {
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+      margin-top: 4px;
+      color: var(--text-muted);
+      font-size: 11px;
+      line-height: 1.25;
+      white-space: normal;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      word-break: normal;
+      overflow-wrap: normal;
+      hyphens: none;
+    }
+    .key-link,
+    .row-link {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .done-toggle {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: default;
+    }
+    .done-ui {
+      position: relative;
+      width: 22px;
+      height: 22px;
+      border-radius: 999px;
+      border: 1.5px solid #b7dfc3;
+      background: linear-gradient(180deg, #ffffff 0%, #f5fff8 100%);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.8), 0 1px 4px rgba(9, 30, 66, 0.08);
+      display: grid;
+      place-items: center;
+      transition: transform 180ms ease, box-shadow 180ms ease, background 180ms ease, border-color 180ms ease;
+    }
+    .done-ui::after {
+      content: '✓';
+      color: transparent;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 1;
+      transform: translateY(0) scale(0.7);
+    }
+    .done-ui.is-checked {
+      border-color: #1f845a;
+      background: radial-gradient(circle at 30% 30%, #4bce97 0%, #1f845a 75%);
+      box-shadow: 0 6px 18px rgba(31, 132, 90, 0.28);
+      transform: scale(1.06);
+    }
+    .done-ui.is-checked::after {
+      color: #ffffff;
+      transform: translateY(-0.5px) scale(1);
+      display: block;
+    }
+    .todo-row {
+      transition: background 180ms ease, opacity 180ms ease, transform 180ms ease, filter 180ms ease;
+    }
+    .todo-row.is-done {
+      background: linear-gradient(90deg, #eefbf3 0%, #f7fffa 100%);
+      opacity: 0.82;
+    }
+    .todo-row.is-done .ticket-type-badge,
+    .todo-row.is-done .status-badge {
+      filter: saturate(0.55) brightness(0.98);
+    }
+    .todo-row.is-done .row-link,
+    .todo-row.is-done .key-link,
+    .todo-row.is-done .time-main,
+    .todo-row.is-done .source-note {
+      text-decoration: line-through;
+    }
+
+    section.page-section {
+      padding: 64px 0;
+      border-top: 1px solid rgba(9, 30, 66, 0.08);
+    }
+    .section-head {
+      display: grid;
+      gap: 14px;
+      margin-bottom: 28px;
+    }
+    .section-head h2 {
+      font-size: clamp(2rem, 1.5rem + 1.8vw, 3.1rem);
+      max-width: 12ch;
+    }
+    .facts,
+    .features,
+    .install-grid,
+    .roadmap-grid,
+    .cta-grid {
+      display: grid;
+      gap: 16px;
+    }
+    .facts { grid-template-columns: repeat(3, 1fr); }
+    .features { grid-template-columns: 1.1fr 0.9fr 0.9fr; }
+    .install-grid,
+    .roadmap-grid,
+    .cta-grid { grid-template-columns: repeat(2, 1fr); }
+    .card {
+      background: var(--page-surface);
+      border: 1px solid rgba(9, 30, 66, 0.08);
+      border-radius: var(--page-radius);
+      padding: 22px;
+      box-shadow: 0 6px 18px rgba(9, 30, 66, 0.03);
+    }
+    .feature-primary {
+      background: linear-gradient(180deg, #ffffff 0%, #f4f8ff 100%);
+    }
+    .card h3 {
+      font-size: 1.45rem;
+      margin-bottom: 12px;
+    }
+    .fact-number {
+      display: block;
+      font-family: 'Cabinet Grotesk', 'Satoshi', Arial, sans-serif;
+      font-size: clamp(2rem, 1.4rem + 2vw, 3rem);
+      letter-spacing: -0.05em;
+      margin-bottom: 8px;
+    }
+    .stack {
+      display: grid;
+      gap: 10px;
+      margin-top: 18px;
+    }
+    .mini-line {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 13px 14px;
+      border-radius: 14px;
+      background: #f6f9ff;
+      border: 1px solid rgba(0, 82, 204, 0.08);
+      font-size: 13px;
+      color: var(--page-muted);
+    }
+    .mini-line strong {
+      color: var(--page-text);
+      font-size: 14px;
+    }
+    .steps,
+    .clean {
+      list-style: none;
+      margin: 18px 0 0;
+      padding: 0;
+      display: grid;
+      gap: 12px;
+    }
+    .steps { counter-reset: step; }
+    .steps li,
+    .clean li {
+      padding-top: 12px;
+      border-top: 1px solid rgba(9, 30, 66, 0.08);
+      color: var(--page-muted);
+      font-size: 15px;
+      line-height: 1.55;
+    }
+    .steps li {
+      counter-increment: step;
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 12px;
+    }
+    .steps li::before {
+      content: counter(step);
+      width: 30px;
+      height: 30px;
+      display: grid;
+      place-items: center;
+      border-radius: 999px;
+      background: #eaf2ff;
+      color: var(--page-primary);
+      font-weight: 700;
+      font-size: 13px;
+      margin-top: 2px;
+    }
+    .code-block {
+      margin-top: 18px;
+      padding: 16px;
+      border-radius: 14px;
+      background: #f5f7fb;
+      border: 1px solid rgba(9, 30, 66, 0.08);
+      overflow-x: auto;
+      white-space: pre;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 12px;
+      color: var(--page-text);
+    }
+    footer {
+      padding: 32px 0 54px;
+      color: var(--page-muted);
+      font-size: 13px;
+    }
+    .footer-line {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(9, 30, 66, 0.08);
+    }
+
+    @media (max-width: 1120px) {
+      .hero-grid,
+      .signals,
+      .facts,
+      .features,
+      .install-grid,
+      .roadmap-grid,
+      .cta-grid {
+        grid-template-columns: 1fr;
+      }
+      h1,
+      .section-head h2 { max-width: none; }
+    }
+    @media (max-width: 760px) {
+      .site-header .container {
+        padding: 12px 0;
+        min-height: auto;
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .footer-line {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <a class="brand" href="#top">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 6.5h14"></path>
+            <path d="M5 12h14"></path>
+            <path d="M5 17.5h9"></path>
+            <circle cx="18" cy="17.5" r="1.9" fill="currentColor" stroke="none"></circle>
+          </svg>
+        </span>
+        <span>ITA Daily To-do Tool</span>
+      </a>
+      <nav class="nav" aria-label="Hauptnavigation">
+        <a href="#preview">Preview</a>
+        <a href="#features">Features</a>
+        <a href="#install">Setup</a>
+        <a href="#roadmap">Roadmap</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <div class="eyebrow">Jira Data Center · Edge Extension</div>
+          <h1>Eine Daily-To-do-Liste, die wirklich zum ITA-Workflow passt.</h1>
+          <p>
+            Das ITA Daily To-do Tool ist eine lokale Browser-Erweiterung für Jira Data Center. Sie zieht Aufträge über <code>Einsatzzeit</code>, ReserWUtion über <code>Start Time</code> und Events über <code>Assembly Time Start</code> sowie <code>Dismantling Time</code> in eine gemeinsame, chronologische Tagesansicht.
+          </p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#install">Direkt veröffentlichen</a>
+            <a class="btn btn-secondary" href="#preview">Preview ansehen</a>
+          </div>
+          <div class="signals">
+            <div class="signal">
+              <strong>Heute als Standard</strong>
+              <span>Beim ersten Öffnen landet das Tool direkt im Today-Preset.</span>
+            </div>
+            <div class="signal">
+              <strong>Dedupliziert nach Key</strong>
+              <span>Mehrfachdarstellungen werden sauber vermieden.</span>
+            </div>
+            <div class="signal">
+              <strong>Lokale Checks</strong>
+              <span>Done-Häkchen und Daily-Nutzung bleiben im Browser-Kontext.</span>
+            </div>
+          </div>
+        </div>
+
+        <aside class="preview-card" id="preview" aria-label="Produktvorschau des echten Popups im Heute-Zustand">
+          <div class="preview-caption">
+            <span><strong>Preview</strong> · angelehnt an dein echtes Popup</span>
+            <span>Heute-Zustand</span>
+          </div>
+
+          <div class="popup-shell">
+            <div class="popup-demo">
+              <header class="header">
+                <div class="header-copy">
+                  <h1>Jira Daily ToDo</h1>
+                  <p class="subtitle">Überfällig bis 3 Tage, nach gemeinsamer Zeit sortiert</p>
+                </div>
+                <div class="header-actions">
+                  <button class="secondary-button" type="button">Einstellungen</button>
+                  <button class="refresh-button" type="button">Neu laden</button>
+                </div>
+              </header>
+
+              <section class="preset-bar" aria-label="Zeitraum umschalten">
+                <button class="preset-button is-active" type="button">Heute</button>
+                <button class="preset-button" type="button">-14 bis +3</button>
+                <button class="preset-button" type="button">Erweitert</button>
+              </section>
+
+              <section class="status-panel">
+                <p id="statusText">7 Tickets geladen</p>
+                <p id="metaText" class="meta-text">Ansicht: Heute · Basis-URL: support.wu.ac.at</p>
+              </section>
+
+              <section class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th class="done-head">Done</th>
+                      <th>Datum / Uhrzeit</th>
+                      <th>Ticket Type</th>
+                      <th>Key</th>
+                      <th>Status</th>
+                      <th>Summary</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr class="todo-row">
+                      <td class="done-cell">
+                        <label class="done-toggle"><span class="done-ui"></span></label>
+                      </td>
+                      <td class="time-cell">
+                        <span class="time-main">07.05.2026, 08:15</span>
+                        <span class="source-note">Assembly Time Start</span>
+                      </td>
+                      <td class="ticket-type-cell"><span class="ticket-type-badge ticket-type-red">Event - Aufbau</span></td>
+                      <td class="key-cell"><span class="key-link">IT-1842</span></td>
+                      <td class="status-cell"><span class="status-badge status-overdue">Open</span></td>
+                      <td class="summary-cell"><span class="row-link">Aufbau im Audimax vorbereiten</span></td>
+                    </tr>
+                    <tr class="todo-row is-done">
+                      <td class="done-cell">
+                        <label class="done-toggle"><span class="done-ui is-checked"></span></label>
+                      </td>
+                      <td class="time-cell">
+                        <span class="time-main">07.05.2026, 09:00</span>
+                        <span class="source-note">Einsatzzeit</span>
+                      </td>
+                      <td class="ticket-type-cell"><span class="ticket-type-badge ticket-type-red">Auftrag</span></td>
+                      <td class="key-cell"><span class="key-link">IT-1864</span></td>
+                      <td class="status-cell"><span class="status-badge status-normal">Open</span></td>
+                      <td class="summary-cell"><span class="row-link">Raumcheck im TC erledigen</span></td>
+                    </tr>
+                    <tr class="todo-row">
+                      <td class="done-cell">
+                        <label class="done-toggle"><span class="done-ui"></span></label>
+                      </td>
+                      <td class="time-cell">
+                        <span class="time-main">07.05.2026, 10:30</span>
+                        <span class="source-note">Start Time</span>
+                      </td>
+                      <td class="ticket-type-cell"><span class="ticket-type-badge ticket-type-gray">ReserWUtion</span></td>
+                      <td class="key-cell"><span class="key-link">IT-1891</span></td>
+                      <td class="status-cell"><span class="status-badge status-upcoming">Waiting</span></td>
+                      <td class="summary-cell"><span class="row-link">Seminarraum 2 vorbereiten</span></td>
+                    </tr>
+                    <tr class="todo-row">
+                      <td class="done-cell">
+                        <label class="done-toggle"><span class="done-ui"></span></label>
+                      </td>
+                      <td class="time-cell">
+                        <span class="time-main">07.05.2026, 13:00</span>
+                        <span class="source-note">Einsatzzeit</span>
+                      </td>
+                      <td class="ticket-type-cell"><span class="ticket-type-badge ticket-type-red">Auftrag</span></td>
+                      <td class="key-cell"><span class="key-link">IT-1903</span></td>
+                      <td class="status-cell"><span class="status-badge status-normal">In Progress</span></td>
+                      <td class="summary-cell"><span class="row-link">Leihgerät für Nachmittag bereitstellen</span></td>
+                    </tr>
+                    <tr class="todo-row">
+                      <td class="done-cell">
+                        <label class="done-toggle"><span class="done-ui"></span></label>
+                      </td>
+                      <td class="time-cell">
+                        <span class="time-main">07.05.2026, 15:15</span>
+                        <span class="source-note">Start Time</span>
+                      </td>
+                      <td class="ticket-type-cell"><span class="ticket-type-badge ticket-type-gray">ReserWUtion</span></td>
+                      <td class="key-cell"><span class="key-link">IT-1917</span></td>
+                      <td class="status-cell"><span class="status-badge status-upcoming">Open</span></td>
+                      <td class="summary-cell"><span class="row-link">Präsentationsmedien im HS prüfen</span></td>
+                    </tr>
+                    <tr class="todo-row">
+                      <td class="done-cell">
+                        <label class="done-toggle"><span class="done-ui"></span></label>
+                      </td>
+                      <td class="time-cell">
+                        <span class="time-main">07.05.2026, 19:30</span>
+                        <span class="source-note">Dismantling Time</span>
+                      </td>
+                      <td class="ticket-type-cell"><span class="ticket-type-badge ticket-type-red">Event - Abbau</span></td>
+                      <td class="key-cell"><span class="key-link">IT-1938</span></td>
+                      <td class="status-cell"><span class="status-badge status-normal">Open</span></td>
+                      <td class="summary-cell"><span class="row-link">Abbau nach Veranstaltung freigeben</span></td>
+                    </tr>
+                    <tr class="todo-row">
+                      <td class="done-cell">
+                        <label class="done-toggle"><span class="done-ui"></span></label>
+                      </td>
+                      <td class="time-cell">
+                        <span class="time-main">07.05.2026, 20:15</span>
+                        <span class="source-note">Einsatzzeit</span>
+                      </td>
+                      <td class="ticket-type-cell"><span class="ticket-type-badge ticket-type-red">Auftrag</span></td>
+                      <td class="key-cell"><span class="key-link">IT-1944</span></td>
+                      <td class="status-cell"><span class="status-badge status-normal">Open</span></td>
+                      <td class="summary-cell"><span class="row-link">Spätschicht-Übergabe vorbereiten</span></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </section>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="page-section">
+      <div class="container">
+        <div class="section-head">
+          <h2>Was das Tool im Alltag besser macht</h2>
+          <p class="section-intro">
+            Statt mehrere Jira-Suchen offen zu haben, zeigt das Tool die relevanten Tagesaufgaben in einer einzigen Reihenfolge. Gerade bei wechselnden Zeitfeldern und unterschiedlichen Tickettypen spart das täglich manuellen Sortieraufwand.
+          </p>
+        </div>
+        <div class="facts">
+          <article class="card">
+            <span class="fact-number">3</span>
+            <p>Ticketarten werden gemeinsam abgebildet: Aufträge, ReserWUtion und Events.</p>
+          </article>
+          <article class="card">
+            <span class="fact-number">2</span>
+            <p>Presets stehen direkt oben bereit: <code>Heute</code> und <code>-14 bis +3</code>, plus ein erweiterbarer Bereich.</p>
+          </article>
+          <article class="card">
+            <span class="fact-number">1</span>
+            <p>Daily-Ansicht statt Filterwechsel: ein Blick genügt, um die Reihenfolge des Tages zu sehen.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="page-section" id="features">
+      <div class="container">
+        <div class="section-head">
+          <h2>Funktionslogik</h2>
+          <p class="section-intro">
+            Die Seite beschreibt jetzt die reale Logik des Tools und zeigt auch optisch ein Popup, das eng an dein echtes Interface angelehnt ist. Damit kannst du die GitHub Page bereits veröffentlichen, ohne dass es nur wie ein generischer Mockup-Entwurf wirkt.
+          </p>
+        </div>
+        <div class="features">
+          <article class="card feature-primary">
+            <h3>Gemeinsame Sortierung</h3>
+            <p>Die Extension nimmt pro Ticketart das jeweils richtige Zeitfeld und bringt daraus eine Daily-Liste hervor, die für den tatsächlichen ITA-Arbeitsablauf besser passt als eine einzelne Standard-Jira-Sortierung.</p>
+            <div class="stack">
+              <div class="mini-line"><strong>Auftrag</strong><span>über Einsatzzeit</span></div>
+              <div class="mini-line"><strong>ReserWUtion</strong><span>über Start Time</span></div>
+              <div class="mini-line"><strong>Event</strong><span>über Aufbau und Abbau</span></div>
+            </div>
+          </article>
+          <article class="card">
+            <h3>Lokale Daily-Helfer</h3>
+            <p>Einträge können lokal als erledigt markiert werden, ohne Jira selbst zu verändern. Dadurch bleibt die Liste operativ nutzbar, auch wenn in Jira keine direkte Anpassung möglich ist.</p>
+          </article>
+          <article class="card">
+            <h3>Benachrichtigungen</h3>
+            <p>Im Hintergrund kann das Tool neue Einträge für die Heute-Ansicht erkennen und Badge plus Notification auslösen, auch wenn das Popup nicht offen ist.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="page-section" id="install">
+      <div class="container">
+        <div class="section-head">
+          <h2>Veröffentlichung</h2>
+          <p class="section-intro">
+            Diese Datei ist bewusst als statische <code>index.html</code> gebaut. Du kannst sie deshalb direkt in dein Repository legen und ohne Build-Tool auf GitHub Pages veröffentlichen.
+          </p>
+        </div>
+        <div class="install-grid">
+          <article class="card">
+            <h3>In 4 Schritten live</h3>
+            <ol class="steps">
+              <li>Erstelle ein Repository wie <code>ita-daily-tool</code>.</li>
+              <li>Speichere diese Datei als <code>index.html</code> im Root des Repositories.</li>
+              <li>Aktiviere unter GitHub → Settings → Pages den <code>main</code>-Branch und <code>/(root)</code>.</li>
+              <li>Push den Commit und rufe danach die Projekt-URL deiner GitHub Page auf.</li>
+            </ol>
+          </article>
+          <article class="card">
+            <h3>Was du jetzt schon ergänzen kannst</h3>
+            <ul class="clean">
+              <li>deinen echten Repository-Link</li>
+              <li>eine Release-ZIP oder Installationsanleitung für Edge</li>
+              <li>echte Screenshots zusätzlich zur HTML-Preview</li>
+              <li>einen kurzen Changelog mit Today-Default und Notification-Updates</li>
+            </ul>
+            <div class="code-block">Repository URL: https://github.com/DEIN-USERNAME/DEIN-REPO
+GitHub Page:   https://DEIN-USERNAME.github.io/DEIN-REPO/</div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="page-section" id="roadmap">
+      <div class="container">
+        <div class="section-head">
+          <h2>Nächste Ausbaustufen</h2>
+          <p class="section-intro">
+            Für eine erste Veröffentlichung reicht die Seite jetzt schon gut aus. Die nächsten sinnvollen Schritte wären eher inhaltlich als strukturell: echte Links, Screenshots und optional eine kleine Download-Sektion.
+          </p>
+        </div>
+        <div class="roadmap-grid">
+          <article class="card">
+            <h3>Version mit realem Repo</h3>
+            <p>Dann ist die Seite sofort nicht nur Showcase, sondern auch echter Einstiegspunkt für Code, Releases und Doku.</p>
+          </article>
+          <article class="card">
+            <h3>Version mit echten Popup-Screenshots</h3>
+            <p>Dann kann die HTML-Preview zusätzlich durch direkte Screenshots ergänzt werden, um die reale Nutzung noch klarer zu zeigen.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-line">
+      <span>ITA Daily To-do Tool · GitHub Pages Starter</span>
+      <span>Direkt bereit für <code>index.html</code> im Repo.</span>
+    </div>
+  </footer>
+</body>
+</html>
