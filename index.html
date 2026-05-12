@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ITA Daily To-do Tool</title>
-  <meta name="description" content="ITA Daily To-do Tool – Edge-Erweiterung für Jira Data Center mit gemeinsamer Tagesansicht, lokalen Done-Checks und Benachrichtigungen bei neuen Tickets.">
+  <title>ITA Daily To-Do Tool 0.6.1</title>
+  <meta name="description" content="ITA Daily To-Do Tool 0.6.1 – Edge-Erweiterung für Jira Data Center mit gemeinsamer Tagesansicht, lokalen Done-Checks und klickbaren Benachrichtigungen bei neuen Tickets.">
   <meta property="og:title" content="ITA Daily To-do Tool">
-  <meta property="og:description" content="Chronologische Daily-Liste für Jira Data Center mit Today-Preset, Done-Checks und Hinweis auf neue Tickets.">
+  <meta property="og:description" content="Chronologische Daily-Liste für Jira Data Center mit Today-Preset, Done-Checks und klickbaren Benachrichtigungen für neue Tickets.">
   <meta property="og:type" content="website">
   <style>
     :root {
@@ -116,12 +116,12 @@
     }
 
     .hero {
-      padding: 80px 0 60px;
+      padding: 34px 0 60px;
     }
     .hero-grid {
       display: grid;
       grid-template-columns: 1.02fr 1.08fr;
-      gap: 44px;
+      gap: 34px;
       align-items: center;
     }
     .eyebrow {
@@ -136,7 +136,7 @@
       font-weight: 800;
       letter-spacing: 0.08em;
       text-transform: uppercase;
-      margin-bottom: 18px;
+      margin-bottom: 4px;
     }
     h1, h2, h3 {
       margin: 0;
@@ -146,7 +146,7 @@
     h1 {
       font-size: clamp(3rem, 2rem + 4vw, 5.4rem);
       max-width: 10ch;
-      margin-bottom: 18px;
+      margin-bottom: 4px;
     }
     .hero-copy p,
     .section-intro,
@@ -190,7 +190,7 @@
     .btn-secondary:hover { background: var(--surface-2); }
     .highlights {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(4, 1fr);
       gap: 14px;
     }
     .highlight {
@@ -316,7 +316,7 @@
       border: 1px solid var(--popup-border);
       border-radius: 8px;
       padding: 10px 12px;
-      margin-bottom: 12px;
+      margin-bottom: 4px;
     }
     .status-text {
       margin: 0;
@@ -456,7 +456,7 @@
       display: grid;
       gap: 16px;
     }
-    .stats { grid-template-columns: repeat(3, 1fr); }
+    .stats { grid-template-columns: repeat(4, 1fr); }
     .feature-grid { grid-template-columns: 1.08fr 0.92fr 0.92fr; }
     .steps-grid { grid-template-columns: repeat(2, 1fr); }
     .card {
@@ -468,7 +468,7 @@
     }
     .card h3 {
       font-size: 1.5rem;
-      margin-bottom: 12px;
+      margin-bottom: 4px;
     }
     .stat-number {
       display: block;
@@ -581,6 +581,220 @@
       background: #fff;
       border: 1px solid rgba(9, 30, 66, 0.08);
     }
+
+    .section-head h2.nowrap-title {
+      max-width: none;
+      white-space: nowrap;
+    }
+    .updates-panel {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 18px;
+      align-items: stretch;
+    }
+    .updates-hero {
+      background: linear-gradient(135deg, #f7fbff 0%, #eef5ff 52%, #f9fbff 100%);
+      border: 1px solid rgba(0,82,204,0.10);
+      position: relative;
+      overflow: hidden;
+    }
+    .updates-hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at top right, rgba(0,82,204,0.10), transparent 34%);
+      pointer-events: none;
+    }
+    .updates-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: #ffffff;
+      border: 1px solid rgba(0,82,204,0.10);
+      color: var(--primary);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+      position: relative;
+      z-index: 1;
+    }
+    .updates-hero h3 {
+      font-size: 2rem;
+      line-height: 1.02;
+      margin-bottom: 12px;
+      position: relative;
+      z-index: 1;
+    }
+    .updates-hero p {
+      position: relative;
+      z-index: 1;
+    }
+    .updates-list {
+      list-style: none;
+      margin: 18px 0 0;
+      padding: 0;
+      display: grid;
+      gap: 12px;
+      position: relative;
+      z-index: 1;
+    }
+    .updates-list li {
+      display: grid;
+      grid-template-columns: 26px 1fr;
+      gap: 12px;
+      align-items: start;
+      color: var(--text-muted);
+      font-size: 15px;
+      line-height: 1.55;
+    }
+    .updates-list li::before {
+      content: '✦';
+      width: 26px;
+      height: 26px;
+      display: grid;
+      place-items: center;
+      border-radius: 999px;
+      background: rgba(0,82,204,0.08);
+      color: var(--primary);
+      font-size: 12px;
+      font-weight: 700;
+      margin-top: 1px;
+    }
+    .updates-mini {
+      display: grid;
+      gap: 14px;
+    }
+    .update-tile {
+      background: #ffffff;
+      border: 1px solid rgba(9,30,66,0.08);
+      border-radius: 18px;
+      padding: 18px;
+      box-shadow: 0 8px 20px rgba(9,30,66,0.04);
+    }
+    .update-tile strong {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 14px;
+      color: var(--text);
+    }
+    .update-tile span {
+      display: block;
+      color: var(--text-muted);
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+
+    .section-head h2.nowrap-title {
+      max-width: none;
+      white-space: nowrap;
+    }
+    .updates-showcase {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 18px;
+      align-items: stretch;
+    }
+    .updates-main {
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(135deg, #f8fbff 0%, #eef4ff 55%, #ffffff 100%);
+      border: 1px solid rgba(0,82,204,0.10);
+    }
+    .updates-main::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at top right, rgba(0,82,204,0.14), transparent 36%);
+      pointer-events: none;
+    }
+    .patch-chip {
+      position: relative;
+      z-index: 1;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: #ffffff;
+      border: 1px solid rgba(0,82,204,0.10);
+      color: var(--primary);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+    .updates-main h3 {
+      position: relative;
+      z-index: 1;
+      font-size: 2rem;
+      line-height: 1.04;
+      margin-bottom: 12px;
+    }
+    .updates-main p {
+      position: relative;
+      z-index: 1;
+    }
+    .updates-points {
+      position: relative;
+      z-index: 1;
+      list-style: none;
+      margin: 18px 0 0;
+      padding: 0;
+      display: grid;
+      gap: 12px;
+    }
+    .updates-points li {
+      display: grid;
+      grid-template-columns: 28px 1fr;
+      gap: 12px;
+      align-items: start;
+      color: var(--text-muted);
+      font-size: 15px;
+      line-height: 1.55;
+    }
+    .updates-points li::before {
+      content: '✦';
+      width: 28px;
+      height: 28px;
+      display: grid;
+      place-items: center;
+      border-radius: 999px;
+      background: rgba(0,82,204,0.09);
+      color: var(--primary);
+      font-size: 12px;
+      font-weight: 800;
+      margin-top: 1px;
+    }
+    .updates-side {
+      display: grid;
+      gap: 16px;
+    }
+    .update-card {
+      background: #ffffff;
+      border: 1px solid rgba(9,30,66,0.08);
+      border-radius: 18px;
+      padding: 18px;
+      box-shadow: 0 8px 20px rgba(9,30,66,0.04);
+    }
+    .update-card strong {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 14px;
+      color: var(--text);
+    }
+    .update-card span {
+      display: block;
+      color: var(--text-muted);
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
     footer {
       padding: 30px 0 52px;
       color: var(--text-muted);
@@ -600,7 +814,8 @@
       .highlights,
       .stats,
       .feature-grid,
-      .steps-grid {
+      .steps-grid,
+      .updates-panel {
         grid-template-columns: 1fr;
       }
       h1,
@@ -633,7 +848,7 @@
             <circle cx="18" cy="17.5" r="1.9" fill="currentColor" stroke="none"></circle>
           </svg>
         </span>
-        <span>ITA Daily To-do Tool</span>
+        <span>ITA Daily To-Do Tool 0.6.1</span>
       </a>
       <nav class="nav" aria-label="Hauptnavigation">
         <a href="#download">Download</a>
@@ -649,12 +864,13 @@
       <div class="container hero-grid">
         <div class="hero-copy">
           <div class="eyebrow">Jira Data Center · Edge Erweiterung</div>
+          <p style="margin:2px 0 0;color:var(--text-muted);font-size:13px;font-weight:700;line-height:1.15;">Version 0.6.1 · klickbare Notifications</p>
           <h1>Ein Daily-Tool für den echten ITA-Arbeitsalltag.</h1>
           <p>
             Das ITA Daily To-do Tool bündelt Jira-Tickets aus mehreren Zeitfeldern in einer gemeinsamen, chronologischen Tagesansicht. Aufträge mit <code>Einsatzzeit</code>, ReserWUtion mit <code>Start Time</code> und Events mit <code>Assembly Time Start</code> beziehungsweise <code>Dismantling Time</code> landen so in einer einzigen Liste statt in mehreren getrennten Suchen.
           </p>
           <div class="hero-actions">
-            <a class="btn btn-primary" href="jira-daily-todo-6.0.zip" download>ZIP herunterladen</a>
+            <a class="btn btn-primary" href="Jira-Daily-ToDo-0.6.1.zip" download>ZIP herunterladen</a>
             <a class="btn btn-secondary" href="#installation">Zu Edge hinzufügen</a>
           </div>
           <div class="highlights">
@@ -669,6 +885,10 @@
             <div class="highlight">
               <strong>Keine Tickets mehr übersehen</strong>
               <span>Wenn in der Heute-Liste ein neuer Eintrag dazukommt, meldet sich das Tool automatisch per Badge und Browser-Benachrichtigung.</span>
+            </div>
+            <div class="highlight">
+              <strong>Klickbare Notification</strong>
+              <span>Ein Klick auf die Benachrichtigung öffnet das Tool und hebt den neuen Eintrag direkt hervor.</span>
             </div>
           </div>
         </div>
@@ -776,11 +996,11 @@
               Lade die Erweiterung herunter und entpacke sie lokal auf deinem Rechner. Die Erweiterung wird danach über den Entwicklermodus in Microsoft Edge geladen.
             </p>
             <div class="download-box">
-              <a class="btn btn-primary" href="jira-daily-todo-6.0.zip" download>Jira-Daily-ToDo.zip</a>
+              <a class="btn btn-primary" href="Jira-Daily-ToDo-0.6.1.zip" download>Jira-Daily-ToDo-0.6.1.zip</a>
               <div class="download-meta">
                 <span class="download-chip">Name: Jira Daily ToDo</span>
-                <span class="download-chip">Version: 0.6.0</span>
-                <span class="download-chip">Browser: Microsoft Edge/Google Chrome</span>
+                <span class="download-chip">Version: 0.6.1</span>
+                <span class="download-chip">Browser: Microsoft Edge</span>
               </div>
             </div>
           </article>
@@ -789,9 +1009,9 @@
             <ul class="clean">
               <li>Today-Preset als Standardansicht</li>
               <li>Preset <code>-14 bis +3</code> für einen breiteren Zeitraum</li>
-              <li>Erweiterter Modus mit <b>individuellen</b> Start- und Endtagen</li>
-              <li><b>Lokale</b> Done-Häkchen pro Tag mit Fokus auf die erste offene Aufgabe</li>
-              <li><b>Benachrichtigung</b> bei <b>neuen</b> Heute-Tickets per Badge und Browser-Notification</li>
+              <li>Erweiterter Modus mit individuellen Start- und Endtagen</li>
+              <li>Lokale Done-Häkchen pro Tag mit Fokus auf die erste offene Aufgabe</li>
+              <li>Benachrichtigung bei neuen Heute-Tickets per Badge und Browser-Notification, inklusive klickbarer Hervorhebung im Popup</li>
             </ul>
           </article>
         </div>
@@ -801,7 +1021,7 @@
     <section class="page-section" id="installation">
       <div class="container">
         <div class="section-head">
-          <h2>Installation in Edge</h2>
+          <h2 class="nowrap-title">Installation in Edge</h2>
           <p class="section-intro">
             Die Erweiterung wird lokal als entpackte Erweiterung geladen. So kann sie intern schnell verteilt und direkt mit der bestehenden Jira-Session genutzt werden.
           </p>
@@ -810,10 +1030,10 @@
           <article class="card">
             <h3>Schritt für Schritt</h3>
             <ol class="steps">
-              <li><span class="step-text">ZIP-Datei herunterladen und in einen normalen Ordner <b>entpacken.</b> (Stelle sicher, dass der Ordner nicht mehr in einem Ordner ist!)</span></li>
+              <li><span class="step-text">ZIP-Datei herunterladen und in einen normalen Ordner entpacken.</span></li>
               <li><span class="step-text">In Edge <span class="inline-chip">edge://extensions</span> öffnen.</span></li>
               <li><span class="step-text">Den <span class="inline-chip">Entwicklermodus</span> aktivieren.</span></li>
-              <li><span class="step-text">Auf <span class="inline-chip">Entpackte Dateien laden</span> klicken.</span></li>
+              <li><span class="step-text">Auf <span class="inline-chip">Entpackte Erweiterung laden</span> klicken.</span></li>
               <li><span class="step-text">Den entpackten Ordner des ITA Daily To-do Tools auswählen.</span></li>
               <li><span class="step-text">Die Erweiterung an die Symbolleiste anheften und das Popup öffnen.</span></li>
             </ol>
@@ -824,7 +1044,7 @@
               <li>Die Erweiterung verwendet die bestehende Jira-Browser-Session.</li>
               <li>Die erste Ansicht ist standardmäßig <code>Heute</code>.</li>
               <li>Über <code>Einstellungen</code> lassen sich Basis-URL, JQL und Feld-IDs anpassen.</li>
-              <li>Neue Einträge in der Heute-Liste werden im Hintergrund erkannt und gemeldet.</li>
+              <li>Neue Einträge in der Heute-Liste werden im Hintergrund erkannt, gemeldet und können nach dem Klick auf die Notification im Popup hervorgehoben werden.</li>
             </ul>
           </article>
         </div>
@@ -854,7 +1074,7 @@
           <article class="card">
             <h3>Lokaler Arbeitsmodus</h3>
             <p>
-              Done-Häkchen bleiben <b>lokal</b> im Browser gespeichert und sind pro Tag getrennt. So kann die Liste als persönliche Arbeitsansicht verwendet werden, <b>ohne</b> den Jira-Datensatz selbst zu verändern.
+              Done-Häkchen bleiben lokal im Browser gespeichert und sind pro Tag getrennt. So kann die Liste als persönliche Arbeitsansicht verwendet werden, ohne den Jira-Datensatz selbst zu verändern.
             </p>
           </article>
           <article class="card">
@@ -867,27 +1087,41 @@
       </div>
     </section>
 
-    <section class="page-section">
+    <section class="page-section" id="updates">
       <div class="container">
         <div class="section-head">
-          <h2>Auf einen Blick</h2>
+          <h2 class="nowrap-title">Neueste Updates</h2>
           <p class="section-intro">
-            Die Erweiterung verbindet eine klare Tagesansicht mit lokalen Arbeitsfunktionen und einer unaufdringlichen Erinnerung an neue Tickets.
+            Version 0.6.1 macht die Benachrichtigung aktiver und nützlicher im Alltag. Der neue Patch führt nicht nur zurück ins Tool, sondern hilft auch dabei, den frischen Eintrag ohne Suchen sofort zu erkennen.
           </p>
         </div>
-        <div class="stats">
-          <article class="card">
-            <span class="stat-number">3</span>
-            <p>Ticketarten in einer gemeinsamen Tagesliste.</p>
+        <div class="updates-showcase">
+          <article class="card updates-main">
+            <span class="patch-chip">Patch 0.6.1</span>
+            <h3>Die Notification ist jetzt klickbar und bringt dich direkt zum neuen Ticket zurück.</h3>
+            <p>
+              Sobald ein neues Ticket in der Heute-Liste auftaucht, öffnet ein Klick auf die Benachrichtigung das Tool direkt mit Fokus auf den neuen Eintrag. Dadurch wird aus einem reinen Hinweis ein schneller Wiedereinstieg in den laufenden Arbeitsschritt.
+            </p>
+            <ul class="updates-points">
+              <li>klickbare Notification statt nur passiver Meldung</li>
+              <li>direkter Sprung zurück ins Popup</li>
+              <li>sichtbare Hervorhebung des neuen Tickets nach dem Öffnen</li>
+            </ul>
           </article>
-          <article class="card">
-            <span class="stat-number">2</span>
-            <p>Schnelle Presets direkt im Popup.</p>
-          </article>
-          <article class="card">
-            <span class="stat-number">1</span>
-            <p>Ziel: keine Aufgaben mehr im Tagesverlauf übersehen.</p>
-          </article>
+          <div class="updates-side">
+            <article class="update-card">
+              <strong>Schneller reagieren</strong>
+              <span>Neue Tickets müssen nicht mehr erst in der Liste gesucht werden, weil der Hinweis jetzt direkt ins Tool führt.</span>
+            </article>
+            <article class="update-card">
+              <strong>Bessere Orientierung</strong>
+              <span>Der neue Eintrag wird im Popup gezielt hervorgehoben und geht dadurch im Tagesverlauf nicht mehr so leicht unter.</span>
+            </article>
+            <article class="update-card">
+              <strong>Klarere Produktseite</strong>
+              <span>Die Website zeigt jetzt sichtbar, dass Version 0.6.1 auf klickbare Notifications und direkten Workflow-Fokus setzt.</span>
+            </article>
+          </div>
         </div>
       </div>
     </section>
@@ -895,7 +1129,7 @@
 
   <footer>
     <div class="container footer-line">
-      <span>ITA Daily To-do Tool</span>
+      <span>ITA Daily To-Do Tool 0.6.1</span>
       <span>Interne Edge-Erweiterung für den ITA-Arbeitsalltag</span>
     </div>
   </footer>
