@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ITA Daily To-Do Tool 0.6.1</title>
-  <meta name="description" content="ITA Daily To-Do Tool 0.6.1 – Edge-Erweiterung für Jira Data Center mit gemeinsamer Tagesansicht, lokalen Done-Checks und klickbaren Benachrichtigungen bei neuen Tickets.">
+  <title>ITA Daily To-Do Tool 0.6.2</title>
+  <meta name="description" content="ITA Daily To-Do Tool 0.6.2 – Edge-Erweiterung für Jira Data Center mit gemeinsamer Tagesansicht, lokalen Done-Checks und klickbaren Benachrichtigungen bei neuen Tickets.">
   <meta property="og:title" content="ITA Daily To-do Tool">
   <meta property="og:description" content="Chronologische Daily-Liste für Jira Data Center mit Today-Preset, Done-Checks und klickbaren Benachrichtigungen für neue Tickets.">
   <meta property="og:type" content="website">
@@ -798,11 +798,145 @@
       font-size: 14px;
       line-height: 1.55;
     }
+    .timeline-list {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      gap: 18px;
+      margin-top: 18px;
+      padding-left: 6px;
+    }
+    .timeline-list::before {
+      content: '';
+      position: absolute;
+      left: 16px;
+      top: 10px;
+      bottom: 96px;
+      width: 2px;
+      background: linear-gradient(180deg, rgba(0,82,204,0.18), rgba(0,82,204,0.10));
+      border-radius: 999px;
+    }
+    .timeline-item {
+      position: relative;
+      display: grid;
+      grid-template-columns: 22px 1fr;
+      gap: 16px;
+      align-items: start;
+      padding-bottom: 6px;
+    }
+    .timeline-dot {
+      position: relative;
+      z-index: 1;
+      width: 22px;
+      height: 22px;
+      border-radius: 999px;
+      border: 4px solid rgba(0,82,204,0.18);
+      background: #ffffff;
+      box-shadow: 0 0 0 6px rgba(255,255,255,0.75);
+      margin-top: 3px;
+    }
+    .timeline-content {
+      background: rgba(255,255,255,0.6);
+      border: 1px solid rgba(0,82,204,0.05);
+      border-radius: 16px;
+      padding: 14px 16px;
+      backdrop-filter: blur(4px);
+    }
+    .timeline-content strong {
+      display: block;
+      font-size: 18px;
+      color: var(--text);
+      margin-bottom: 7px;
+    }
+    .timeline-content span {
+      display: block;
+      color: var(--text-muted);
+      font-size: 15px;
+      line-height: 1.55;
+    }
+    .timeline-item.is-current .timeline-content {
+      background: linear-gradient(180deg, #ffffff 0%, #f2f7ff 100%);
+      border-color: rgba(0,82,204,0.12);
+      box-shadow: 0 10px 22px rgba(0,82,204,0.06);
+    }
+    .timeline-item.is-current .timeline-dot {
+      background: var(--primary);
+      border-color: rgba(0,82,204,0.16);
+      box-shadow: 0 0 0 8px rgba(0,82,204,0.09);
+    }
+    .current-release-card {
+      background: linear-gradient(180deg, #ffffff 0%, #f5f9ff 100%);
+      border-color: rgba(0,82,204,0.12);
+    }
+    .timeline-layout {
+      grid-template-columns: 1fr;
+    }
+    .timeline-card {
+      background: linear-gradient(145deg, #f9fbff 0%, #eef4ff 50%, #ffffff 100%);
+      border: 1px solid rgba(0,82,204,0.12);
+      box-shadow: 0 18px 36px rgba(0,82,204,0.06);
+    }
+    .timeline-list {
+      gap: 18px;
+    }
+    .timeline-item {
+      position: relative;
+      grid-template-columns: 22px 1fr;
+      gap: 16px;
+      padding-bottom: 6px;
+    }
+    .timeline-dot {
+      width: 22px;
+      height: 22px;
+      border: 4px solid rgba(0,82,204,0.18);
+      background: #ffffff;
+      box-shadow: 0 0 0 6px rgba(255,255,255,0.75);
+    }
+    .timeline-item:not(:last-child) .timeline-dot::after {
+      top: 20px;
+      height: calc(100% + 18px);
+      background: linear-gradient(180deg, rgba(0,82,204,0.18), rgba(0,82,204,0.05));
+    }
+    .timeline-content {
+      background: rgba(255,255,255,0.6);
+      border: 1px solid rgba(0,82,204,0.05);
+      border-radius: 16px;
+      padding: 14px 16px;
+      backdrop-filter: blur(4px);
+    }
+    .timeline-content strong {
+      font-size: 18px;
+      margin-bottom: 7px;
+    }
+    .timeline-item.is-current .timeline-content {
+      background: linear-gradient(180deg, #ffffff 0%, #f2f7ff 100%);
+      border-color: rgba(0,82,204,0.12);
+      box-shadow: 0 10px 22px rgba(0,82,204,0.06);
+    }
+    .timeline-item.is-current .timeline-dot {
+      background: var(--primary);
+      border-color: rgba(0,82,204,0.16);
+      box-shadow: 0 0 0 8px rgba(0,82,204,0.09);
+    }
+    .patch-chip {
+      box-shadow: 0 6px 18px rgba(0,82,204,0.08);
+    }
+    .updates-main h3 {
+      max-width: none;
+      white-space: nowrap;
+    }
     .download-card h3 {
       margin-bottom: 6px;
     }
     .download-card p {
       margin-top: 0;
+    }
+    .search-term {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-weight: 700;
+      font-style: normal;
+      letter-spacing: 0;
+      font-size: 0.95em;
     }
 
     footer {
@@ -858,7 +992,7 @@
             <circle cx="18" cy="17.5" r="1.9" fill="currentColor" stroke="none"></circle>
           </svg>
         </span>
-        <span>ITA Daily To-Do Tool 0.6.1</span>
+        <span>ITA Daily To-Do Tool 0.6.2</span>
       </a>
       <nav class="nav" aria-label="Hauptnavigation">
         <a href="#updates">Neueste Updates</a>
@@ -875,13 +1009,13 @@
       <div class="container hero-grid">
         <div class="hero-copy">
           <div class="eyebrow">Jira Data Center · Edge Erweiterung</div>
-          <p style="margin:2px 0 0;color:var(--text-muted);font-size:13px;font-weight:700;line-height:1.15;">Version 0.6.1 · klickbare Notifications</p>
+          <p style="margin:2px 0 0;color:var(--text-muted);font-size:13px;font-weight:700;line-height:1.15;">Version 0.6.2 · Aktueller Tool-Patch</p>
           <h1>Ein Daily-Tool für den echten ITA-Arbeitsalltag.</h1>
           <p>
-            Das ITA Daily To-do Tool bündelt Jira-Tickets aus mehreren Zeitfeldern in einer gemeinsamen, chronologischen Tagesansicht. Aufträge mit <strong>Einsatzzeit</strong>, ReserWUtion mit <strong>Start Time</strong> und Events mit <strong>Assembly Time Start</strong> beziehungsweise <strong>Dismantling Time</strong> landen so in einer einzigen Liste statt in mehreren getrennten Suchen.
+            Das ITA Daily To-do Tool bündelt Jira-Tickets aus mehreren Zeitfeldern in einer gemeinsamen, chronologischen Tagesansicht. Aufträge mit <span class="search-term">Einsatzzeit</span>, ReserWUtion mit <span class="search-term">Start Time</span> und Events mit <span class="search-term">Assembly Time Start</span> beziehungsweise <span class="search-term">Dismantling Time</span> landen so in einer einzigen Liste statt in mehreren getrennten Suchen.
           </p>
           <div class="hero-actions">
-            <a class="btn btn-primary" href="jira-daily-todo-6.1.1.zip" download>ZIP herunterladen</a>
+            <a class="btn btn-primary" href="jira-daily-todo-6.1.2.zip" download>ZIP herunterladen</a>
             <a class="btn btn-secondary" href="#installation">Zu Edge hinzufügen</a>
           </div>
           <div class="highlights">
@@ -1007,10 +1141,10 @@
               Lade die Erweiterung herunter und entpacke sie lokal auf deinem Rechner. Die Erweiterung wird danach über den Entwicklermodus in Microsoft Edge geladen.
             </p>
             <div class="download-box">
-              <a class="btn btn-primary" href="jira-daily-todo-6.1.1.zip" download>jira-daily-todo-6.1.1.zip</a>
+              <a class="btn btn-primary" href="jira-daily-todo-6.1.2.zip" download>jira-daily-todo-6.1.2.zip</a>
               <div class="download-meta">
                 <span class="download-chip">Name: Jira Daily ToDo</span>
-                <span class="download-chip">Version: 0.6.1</span>
+                <span class="download-chip">Version: 0.6.2</span>
                 <span class="download-chip">Browser: Microsoft Edge</span>
               </div>
             </div>
@@ -1103,44 +1237,48 @@
         <div class="section-head">
           <h2 class="nowrap-title">Neueste Updates</h2>
           <p class="section-intro">
-            Version 0.6.1 macht die Benachrichtigung aktiver und nützlicher im Alltag. Der neue Patch führt nicht nur zurück ins Tool, sondern hilft auch dabei, den frischen Eintrag ohne Suchen sofort zu erkennen.
+            Hier siehst du die wichtigsten funktionalen Änderungen der letzten Versionen des ITA Daily To-Do Tools – von den ersten Benachrichtigungen bis zu den aktuellen Bugfixes für die Heute-Ansicht.
           </p>
         </div>
-        <div class="updates-showcase">
-          <article class="card updates-main">
-            <span class="patch-chip">Patch 0.6.1</span>
-            <h3>Die Notification ist jetzt klickbar und bringt dich direkt zum neuen Ticket zurück.</h3>
+        <div class="updates-showcase timeline-layout">
+          <article class="card updates-main timeline-card">
+            <span class="patch-chip">Tool Timeline</span>
+            <h3>Release-Verlauf des ITA Daily To-Do Tools.</h3>
             <p>
-              Sobald ein neues Ticket in der Heute-Liste auftaucht, öffnet ein Klick auf die Benachrichtigung das Tool direkt mit Fokus auf den neuen Eintrag. Dadurch wird aus einem reinen Hinweis ein schneller Wiedereinstieg in den laufenden Arbeitsschritt.
+              Seit Version 0.6.0 wurde die Benachrichtigungslogik Schritt für Schritt erweitert. Die Timeline zeigt den Weg von der ersten Notification bis zum aktuellen Bugfix-Release für die Heute-Ansicht im ITA Daily To-Do Tool.
             </p>
-            <ul class="updates-points">
-              <li>klickbare Notification statt nur passiver Meldung</li>
-              <li>direkter Sprung zurück ins Popup</li>
-              <li>sichtbare Hervorhebung des neuen Tickets nach dem Öffnen</li>
-            </ul>
+            <div class="timeline-list">
+              <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                  <strong>Update 0.6.0</strong>
+                  <span>Benachrichtigungen wurden eingeführt, damit neue Tickets in der Heute-Liste nicht mehr unbemerkt dazukommen.</span>
+                </div>
+              </div>
+              <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                  <strong>Update 0.6.1</strong>
+                  <span>Benachrichtigungen wurden klickbar, sodass das Tool direkt geöffnet und der neue Eintrag schneller gefunden werden kann.</span>
+                </div>
+              </div>
+              <div class="timeline-item is-current">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                  <strong>Update 0.6.2</strong>
+                  <span>Wichtige Bugs wurden behoben, damit die Heute-Ansicht wieder korrekt angezeigt wird und Tageseinträge zuverlässig in der richtigen Ansicht landen.</span>
+                </div>
+              </div>
+            </div>
           </article>
-          <div class="updates-side">
-            <article class="update-card">
-              <strong>Schneller reagieren</strong>
-              <span>Neue Tickets müssen nicht mehr erst in der Liste gesucht werden, weil der Hinweis jetzt direkt ins Tool führt.</span>
-            </article>
-            <article class="update-card">
-              <strong>Bessere Orientierung</strong>
-              <span>Der neue Eintrag wird im Popup gezielt hervorgehoben und geht dadurch im Tagesverlauf nicht mehr so leicht unter.</span>
-            </article>
-            <article class="update-card">
-              <strong>Klarere Produktseite</strong>
-              <span>Die Website zeigt jetzt sichtbar, dass Version 0.6.1 auf klickbare Notifications und direkten Workflow-Fokus setzt.</span>
-            </article>
           </div>
-        </div>
       </div>
     </section>
   </main>
 
   <footer>
     <div class="container footer-line">
-      <span>ITA Daily To-Do Tool 0.6.1</span>
+      <span>ITA Daily To-Do Tool 0.6.2</span>
       <span>Interne Edge-Erweiterung für den ITA-Arbeitsalltag</span>
     </div>
   </footer>
