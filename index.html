@@ -595,7 +595,7 @@
             text-overflow: ellipsis;
         }
         .tool-preview-frame .ticket-type-badge {
-            overflow: visible;
+            overflow: hidden;
             text-overflow: clip;
         }
         .tool-preview-frame .ticket-type-red { background: var(--ticket-red-bg); color: var(--ticket-red); }
@@ -756,6 +756,109 @@
             box-shadow: 0 10px 20px rgba(9, 30, 66, 0.08);
         }
 
+
+        @media (max-width: 767.98px) {
+            html, body {
+                overflow-x: hidden;
+            }
+            .px-container-padding {
+                padding-left: 1rem !important;
+                padding-right: 1rem !important;
+            }
+            header .max-w-7xl {
+                flex-direction: column;
+                align-items: flex-start;
+                justify-content: center;
+                gap: 0.85rem;
+                height: auto;
+                padding-top: 0.9rem;
+                padding-bottom: 0.9rem;
+            }
+            header nav {
+                display: flex !important;
+                width: 100%;
+                gap: 0.75rem;
+                overflow-x: auto;
+                padding-bottom: 0.15rem;
+                scrollbar-width: none;
+            }
+            header nav::-webkit-scrollbar {
+                display: none;
+            }
+            header nav a {
+                white-space: nowrap;
+                flex: 0 0 auto;
+            }
+            main > section:first-of-type {
+                padding-top: 3.5rem !important;
+                padding-bottom: 1.75rem !important;
+                gap: 1.5rem !important;
+            }
+            main > section:first-of-type h1 {
+                font-size: 2.25rem !important;
+                line-height: 1.08 !important;
+                word-break: normal;
+                overflow-wrap: anywhere;
+            }
+            main > section:first-of-type p {
+                max-width: 100% !important;
+            }
+            .hero-trust-list {
+                gap: 0.6rem;
+            }
+            .hero-trust-pill {
+                width: 100%;
+                justify-content: flex-start;
+            }
+            .tool-preview-container {
+                width: 100%;
+                max-width: 100%;
+                overflow: hidden;
+                padding-top: 0.25rem !important;
+                padding-bottom: 0 !important;
+                min-height: 0 !important;
+                justify-content: center;
+            }
+            .mobile-preview-frame {
+                width: 100% !important;
+                max-width: 100% !important;
+                margin-bottom: 0 !important;
+                transform: none !important;
+                height: auto !important;
+                aspect-ratio: 680 / 600;
+            }
+            .tool-preview-frame.tool-preview-interactive {
+                width: 100% !important;
+                max-width: 100% !important;
+                height: auto !important;
+                min-height: 0 !important;
+                box-shadow: 0 10px 28px rgba(9, 30, 66, 0.10);
+            }
+            #download .grid,
+            #updates .grid {
+                gap: 1.5rem !important;
+            }
+            #download .p-12,
+            #installation .p-6,
+            #updates .p-7,
+            #updates .p-8,
+            footer .p-12 {
+                padding: 1.25rem !important;
+            }
+            #installation h2,
+            #updates h2,
+            #features h2 {
+                font-size: 2rem !important;
+                line-height: 1.15 !important;
+            }
+            .timeline-wrapper {
+                --timeline-axis: 12px;
+            }
+            .timeline-item {
+                margin-bottom: 1rem !important;
+            }
+        }
+
     </style>
 </head>
 <body class="font-body-md text-on-surface selection:bg-primary-fixed">
@@ -804,8 +907,8 @@
                     </button>
 </div>
 </div>
-<div class="relative tool-preview-container h-auto flex justify-center items-center md:scale-110 xl:scale-125 transition-transform py-8">
-<div class="tool-preview-frame tool-preview-interactive mx-auto scale-[0.6] sm:scale-75 md:scale-100" style="max-width: 680px; transform-origin: center top;">
+<div class="relative tool-preview-container h-auto flex justify-center items-center md:scale-110 xl:scale-125 transition-transform py-6 md:py-8">
+<div class="tool-preview-frame tool-preview-interactive mobile-preview-frame mx-auto scale-[0.74] sm:scale-[0.88] md:scale-100" style="max-width: 680px; transform-origin: center top;">
 <input checked class="preview-radio" id="previewPresetToday" name="previewPreset" type="radio" />
 <input class="preview-radio" id="previewPresetRange" name="previewPreset" type="radio" />
 <input class="preview-radio" id="previewPresetAdvanced" name="previewPreset" type="radio" />
