@@ -117,13 +117,159 @@
             border: 1px solid rgba(234, 242, 255, 1);
             box-shadow: 0px 4px 12px rgba(0, 61, 155, 0.08);
         }
+        .timeline-wrapper {
+            --timeline-axis: 15px;
+        }
         .timeline-line {
             width: 2px;
-            background: #EAF2FF;
+            background: linear-gradient(180deg, rgba(0, 82, 204, 0.14) 0%, rgba(0, 82, 204, 0.08) 100%);
             position: absolute;
             top: 0;
             bottom: 0;
-            left: 15px;
+            left: var(--timeline-axis);
+            transform: translateX(-50%);
+        }
+        .timeline-item {
+            position: relative;
+        }
+        .timeline-card {
+            background: rgba(255, 255, 255, 0.94);
+            border: 1px solid rgba(195, 198, 214, 0.42);
+            border-radius: 2rem;
+            box-shadow: 0 14px 30px rgba(9, 30, 66, 0.08);
+        }
+        .timeline-card-muted {
+            background: rgba(255, 255, 255, 0.76);
+            border: 1px solid rgba(195, 198, 214, 0.55);
+            opacity: 1;
+        }
+        .timeline-copy {
+            line-height: 1.75;
+        }
+
+        .hero-trust-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            padding-top: 0.5rem;
+        }
+        .hero-trust-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.7rem 1rem;
+            border-radius: 999px;
+            background: rgba(255,255,255,0.88);
+            border: 1px solid rgba(195, 198, 214, 0.5);
+            color: #434654;
+            box-shadow: 0 10px 24px rgba(9, 30, 66, 0.06);
+        }
+        .hero-trust-pill .material-symbols-outlined {
+            font-size: 18px;
+            color: #0052cc;
+        }
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(12, minmax(0, 1fr));
+            gap: 1.5rem;
+        }
+        .feature-card {
+            grid-column: span 12;
+            background: rgba(255,255,255,0.92);
+            border: 1px solid rgba(195,198,214,0.42);
+            border-radius: 1.75rem;
+            padding: 1.75rem;
+            box-shadow: 0 14px 34px rgba(9, 30, 66, 0.08);
+        }
+        .feature-card-icon {
+            width: 3rem;
+            height: 3rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 1rem;
+            background: #deebff;
+            color: #0052cc;
+            margin-bottom: 1rem;
+        }
+        .feature-kicker {
+            font-size: 0.8rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: #5e6c84;
+            margin-bottom: 0.45rem;
+        }
+        .feature-card p + p {
+            margin-top: 0.8rem;
+        }
+        .install-emphasis {
+            color: #172b4d;
+            font-weight: 700;
+        }
+        .install-link {
+            color: #0052cc;
+            font-weight: 700;
+            text-decoration: none;
+        }
+        .install-link:hover {
+            text-decoration: underline;
+        }
+        .install-code {
+            display: inline-block;
+            padding: 0.1rem 0.45rem;
+            border-radius: 0.5rem;
+            background: #eaf2ff;
+            color: #0052cc;
+            font-weight: 700;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+        }
+        #features {
+            scroll-margin-top: 96px;
+        }
+        #download {
+            scroll-margin-top: 96px;
+        }
+        #updates {
+            scroll-margin-top: 96px;
+        }
+        #installation {
+            scroll-margin-top: 96px;
+        }
+        .copy-chip {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            margin-left: 0.35rem;
+            border-radius: 0.55rem;
+            border: 1px solid rgba(195, 198, 214, 0.9);
+            background: #ffffff;
+            color: #5e6c84;
+            cursor: pointer;
+            transition: background 0.16s ease, border-color 0.16s ease, color 0.16s ease, transform 0.16s ease;
+            vertical-align: middle;
+        }
+        .copy-chip .material-symbols-outlined {
+            font-size: 16px;
+            line-height: 1;
+        }
+        .copy-chip:hover {
+            background: #f4f7fb;
+            border-color: rgba(0, 82, 204, 0.28);
+            color: #0052cc;
+            transform: translateY(-1px);
+        }
+        .copy-chip.is-copied {
+            background: #e3fcef;
+            color: #006644;
+            border-color: rgba(0, 102, 68, 0.22);
+        }
+
+        @media (min-width: 768px) {
+            .feature-card {
+                grid-column: span 6;
+            }
         }
         .interactive-row:hover {
             background-color: #F4F7FB;
@@ -169,7 +315,7 @@
             display: flex;
             flex-direction: column;
             padding: 12px;
-            border-radius: 12px;
+            border-radius: 10px;
             box-shadow: 0 12px 40px rgba(0,0,0,0.15);
             border: 1px solid var(--border);
             position: relative;
@@ -263,6 +409,353 @@
             left: 4px;
             top: 1px;
         }
+    
+        .tool-preview-frame.tool-preview-interactive {
+            width: 680px;
+            height: 600px;
+            padding: 12px;
+            background: var(--bg);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            box-shadow: 0 12px 32px rgba(9, 30, 66, 0.10);
+            position: relative;
+            overflow: hidden;
+        }
+        .tool-preview-frame .preview-radio {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+        }
+        .tool-preview-frame .tool-preview-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        .tool-preview-frame .header {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto;
+            align-items: start;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        .tool-preview-frame .header-copy { min-width: 0; }
+        .tool-preview-frame .header h1 {
+            margin: 0;
+            font-size: 18px;
+            line-height: 1.2;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            font-weight: 700;
+        }
+        .tool-preview-frame .subtitle,
+        .tool-preview-frame .meta-text {
+            margin: 4px 0 0;
+            color: var(--text-muted);
+            font-size: 12px;
+            line-height: 1.35;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .tool-preview-frame .header-actions {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: nowrap;
+        }
+        .tool-preview-frame .refresh-button,
+        .tool-preview-frame .secondary-button,
+        .tool-preview-frame .preset-button {
+            border: 1px solid var(--border);
+            background: var(--surface);
+            color: var(--text);
+            padding: 6px 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            line-height: 1.2;
+            white-space: nowrap;
+            flex: 0 0 auto;
+            transition: background 160ms ease, border-color 160ms ease, box-shadow 160ms ease, color 160ms ease;
+            user-select: none;
+        }
+        .tool-preview-frame .refresh-button:hover,
+        .tool-preview-frame .secondary-button:hover,
+        .tool-preview-frame .preset-button:hover {
+            background: var(--surface-alt);
+        }
+        .tool-preview-frame .preset-bar {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+        }
+        .tool-preview-frame .advanced-panel {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 10px 12px;
+            margin-bottom: 12px;
+            display: none;
+        }
+        .tool-preview-frame .advanced-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 12px;
+        }
+        .tool-preview-frame .range-control {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            font-size: 12px;
+        }
+        .tool-preview-frame .range-control span,
+        .tool-preview-frame .range-control strong { white-space: nowrap; }
+        .tool-preview-frame .range-control span { font-weight: 600; }
+        .tool-preview-frame .range-control strong { color: var(--primary-hover-tool); }
+        .tool-preview-frame .range-control input[type="range"] { width: 100%; margin: 0; accent-color: var(--primary-tool); }
+        .tool-preview-frame .advanced-actions {
+            margin-top: 10px;
+            display: flex;
+            justify-content: flex-end;
+        }
+        .tool-preview-frame .status-panel {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 10px 12px;
+            margin-bottom: 12px;
+        }
+        .tool-preview-frame .preview-status {
+            display: none;
+            margin: 0;
+            font-weight: 600;
+            font-size: 14px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .tool-preview-frame .table-wrap {
+            position: relative;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+            background: var(--surface);
+            flex: 1 1 auto;
+            min-height: 0;
+        }
+        .tool-preview-frame .table-viewport {
+            height: 100%;
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding-right: 0;
+        }
+        .tool-preview-frame table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed;
+        }
+        .tool-preview-frame thead th {
+            position: sticky;
+            top: 0;
+            z-index: 2;
+            background: var(--surface-alt);
+            text-align: left;
+            font-size: 12px;
+            padding: 10px;
+            border-bottom: 1px solid var(--border);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .tool-preview-frame tbody td {
+            padding: 10px;
+            border-bottom: 1px solid var(--border);
+            font-size: 12px;
+            vertical-align: top;
+            overflow: hidden;
+        }
+        .tool-preview-frame .done-head,
+        .tool-preview-frame .done-cell { text-align: center; }
+        .tool-preview-frame .status-badge,
+        .tool-preview-frame .ticket-type-badge {
+            display: inline-block;
+            max-width: 100%;
+            padding: 4px 8px;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 600;
+            line-height: 1.25;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .tool-preview-frame .ticket-type-badge {
+            overflow: visible;
+            text-overflow: clip;
+        }
+        .tool-preview-frame .ticket-type-red { background: var(--ticket-red-bg); color: var(--ticket-red); }
+        .tool-preview-frame .ticket-type-gray { background: var(--ticket-gray-bg); color: var(--ticket-gray); }
+        .tool-preview-frame .ticket-type-default { background: var(--ticket-default-bg); color: var(--ticket-default-text); }
+        .tool-preview-frame .status-overdue { background: var(--danger-bg); color: var(--danger-text); }
+        .tool-preview-frame .status-upcoming { background: var(--warning-bg); color: var(--warning-text); }
+        .tool-preview-frame .status-normal { background: var(--ok-bg); color: var(--ok-text); }
+        .tool-preview-frame th:nth-child(1), .tool-preview-frame td.done-cell { width: 9%; }
+        .tool-preview-frame th:nth-child(2), .tool-preview-frame td.time-cell { width: 24%; }
+        .tool-preview-frame th:nth-child(3), .tool-preview-frame td.ticket-type-cell { width: 24%; }
+        .tool-preview-frame th:nth-child(4), .tool-preview-frame td.key-cell { width: 8%; }
+        .tool-preview-frame th:nth-child(5), .tool-preview-frame td.status-cell { width: 14%; }
+        .tool-preview-frame th:nth-child(6), .tool-preview-frame td.summary-cell { width: 21%; }
+        .tool-preview-frame .time-main,
+        .tool-preview-frame .key-link,
+        .tool-preview-frame .row-link {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: block;
+        }
+        .tool-preview-frame .time-main {
+            overflow: visible;
+            text-overflow: clip;
+        }
+        .tool-preview-frame .done-head {
+            overflow: visible;
+            text-overflow: clip;
+            min-width: 52px;
+        }
+        .tool-preview-frame .source-note {
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2;
+            margin-top: 4px;
+            color: var(--text-muted);
+            font-size: 11px;
+            line-height: 1.25;
+            white-space: normal;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            word-break: normal;
+            overflow-wrap: normal;
+        }
+        .tool-preview-frame .key-link,
+        .tool-preview-frame .row-link {
+            color: var(--primary-tool);
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .tool-preview-frame .row-link {
+            white-space: nowrap;
+        }
+        .tool-preview-frame .key-link:hover,
+        .tool-preview-frame .row-link:hover {
+            color: var(--primary-hover-tool);
+            text-decoration: underline;
+        }
+        .tool-preview-frame .done-toggle {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        .tool-preview-frame .done-checkbox {
+            position: absolute;
+            opacity: 0;
+            inset: 0;
+            margin: 0;
+            cursor: pointer;
+        }
+        .tool-preview-frame .done-ui {
+            position: relative;
+            width: 22px;
+            height: 22px;
+            border-radius: 999px;
+            border: 1.5px solid #b7dfc3;
+            background: linear-gradient(180deg, #ffffff 0%, #f5fff8 100%);
+            box-shadow: inset 0 0 0 1px rgba(255,255,255,0.8), 0 1px 4px rgba(9, 30, 66, 0.08);
+            display: grid;
+            place-items: center;
+            transition: transform 180ms ease, box-shadow 180ms ease, background 180ms ease, border-color 180ms ease;
+        }
+        .tool-preview-frame .done-ui::after {
+            content: '✓';
+            color: transparent;
+            font-size: 13px;
+            font-weight: 700;
+            line-height: 1;
+            transform: translateY(0) scale(0.7);
+            transition: transform 180ms ease, color 180ms ease;
+        }
+        .tool-preview-frame .done-checkbox:hover + .done-ui {
+            transform: translateY(-1px) scale(1.04);
+            box-shadow: 0 4px 12px rgba(0, 100, 68, 0.14);
+        }
+        .tool-preview-frame .done-checkbox:checked + .done-ui {
+            border-color: #1f845a;
+            background: radial-gradient(circle at 30% 30%, #4bce97 0%, #1f845a 75%);
+            box-shadow: 0 6px 18px rgba(31, 132, 90, 0.28);
+            transform: scale(1.06);
+        }
+        .tool-preview-frame .done-checkbox:checked + .done-ui::after {
+            color: #ffffff;
+            transform: translateY(-0.5px) scale(1);
+        }
+        .tool-preview-frame .todo-row {
+            transition: background 180ms ease, opacity 180ms ease, transform 180ms ease, filter 180ms ease;
+        }
+        .tool-preview-frame .todo-row:hover td { background: #fafbfc; }
+        .tool-preview-frame .table-viewport::-webkit-scrollbar { width: 10px; }
+        .tool-preview-frame .table-viewport::-webkit-scrollbar-track { background: #f1f3f5; border-left: 1px solid #dfe1e6; }
+        .tool-preview-frame .table-viewport::-webkit-scrollbar-thumb { background: #9fa6b2; border-radius: 999px; border: 2px solid #f1f3f5; }
+        .tool-preview-frame .table-viewport { scrollbar-color: #9fa6b2 #f1f3f5; scrollbar-width: auto; }
+        .tool-preview-frame .todo-row.is-notification-highlight td {
+            background: #fff3a3 !important;
+            box-shadow: inset 0 0 0 1px rgba(227, 160, 8, 0.24);
+        }
+        .tool-preview-frame tr:has(.done-checkbox:checked) td {
+            background: linear-gradient(90deg, #eefbf3 0%, #f7fffa 100%);
+            opacity: 0.84;
+        }
+        .tool-preview-frame tr:has(.done-checkbox:checked) .ticket-type-badge,
+        .tool-preview-frame tr:has(.done-checkbox:checked) .status-badge {
+            filter: saturate(0.55) brightness(0.98);
+        }
+        .tool-preview-frame tr:has(.done-checkbox:checked) .row-link,
+        .tool-preview-frame tr:has(.done-checkbox:checked) .key-link,
+        .tool-preview-frame tr:has(.done-checkbox:checked) .time-main,
+        .tool-preview-frame tr:has(.done-checkbox:checked) .source-note {
+            text-decoration: line-through;
+        }
+        .tool-preview-frame #previewPresetToday:checked ~ .tool-preview-inner label[for="previewPresetToday"],
+        .tool-preview-frame #previewPresetRange:checked ~ .tool-preview-inner label[for="previewPresetRange"],
+        .tool-preview-frame #previewPresetAdvanced:checked ~ .tool-preview-inner label[for="previewPresetAdvanced"] {
+            background: var(--primary-tool);
+            border-color: var(--primary-tool);
+            color: #ffffff;
+            font-weight: 700;
+            box-shadow: inset 0 0 0 1px rgba(255,255,255,0.18), 0 0 0 2px rgba(0, 82, 204, 0.08);
+        }
+        .tool-preview-frame #previewPresetAdvanced:checked ~ .tool-preview-inner .advanced-panel { display: block; }
+        .tool-preview-frame #previewPresetToday:checked ~ .tool-preview-inner .status-today,
+        .tool-preview-frame #previewPresetRange:checked ~ .tool-preview-inner .status-range,
+        .tool-preview-frame #previewPresetAdvanced:checked ~ .tool-preview-inner .status-advanced { display: block; }
+        .tool-preview-frame .preview-note {
+            position: absolute;
+            right: 16px;
+            bottom: 16px;
+            padding: 6px 10px;
+            border-radius: 999px;
+            background: rgba(255,255,255,0.96);
+            border: 1px solid rgba(195, 198, 214, 0.6);
+            color: var(--text-muted);
+            font-size: 11px;
+            box-shadow: 0 10px 20px rgba(9, 30, 66, 0.08);
+        }
+
     </style>
 </head>
 <body class="font-body-md text-on-surface selection:bg-primary-fixed">
@@ -287,139 +780,192 @@
 <div class="space-y-stack-gap pt-12">
 <div class="inline-flex items-center gap-2 px-3 py-1 bg-secondary-container text-on-secondary-container rounded-full font-label-sm">
 <span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
-                    Jira Data Center · Edge Erweiterung | Version 0.6.2 (2026)
+                    Für IT-Assistants an der WU Wien · Edge · Jira Data Center
                 </div>
 <h1 class="font-headline-lg text-5xl md:text-6xl text-primary leading-tight">
                     Ein Daily-Tool für den echten ITA-Arbeitsalltag.
                 </h1>
 <p class="font-body-lg text-on-surface-variant max-w-lg">
-                    Verwalten Sie Ihre Jira-Tickets über alle Felder hinweg in einer einzigen, chronologischen Tagesansicht. Reduzieren Sie den Fokus-Wechsel und behalten Sie Ihre Deadlines im Griff.
+                    Bündeln Sie WU-relevante Jira-Tickets aus mehreren Zeitfeldern in einer einzigen Tagesansicht. Das Tool läuft lokal im Browser, öffnet neue Einträge direkt aus Benachrichtigungen und funktioniert ohne Anpassungen in Jira.
                 </p>
-<div class="flex flex-wrap gap-4 pt-4">
+<div class="hero-trust-list">
+<div class="hero-trust-pill"><span class="material-symbols-outlined">school</span><span>Für WU IT-Assistants</span></div>
+<div class="hero-trust-pill"><span class="material-symbols-outlined">shield_lock</span><span>Lokal im Browser</span></div>
+<div class="hero-trust-pill"><span class="material-symbols-outlined">tune</span><span>Keine Jira-Anpassungen nötig</span></div>
+</div>
+<div class="flex flex-wrap gap-4 pt-6">
 <a class="bg-primary text-on-primary px-8 py-4 rounded-xl font-headline-sm hover:-translate-y-1 hover:shadow-lg transition-all flex items-center gap-2" href="https://jonistrick.github.io/ita-daily-todo/jira-daily-todo-6.1.2.zip">
 <span class="material-symbols-outlined">download</span>
                         ZIP herunterladen
                     </a>
-<button class="bg-secondary-container text-primary px-8 py-4 rounded-xl font-headline-sm hover:bg-on-primary-container transition-all flex items-center gap-2" onclick="document.getElementById('installation').scrollIntoView({behavior: 'smooth'})">
+<button class="bg-white text-primary px-8 py-4 rounded-xl font-headline-sm border border-outline-variant/40 hover:-translate-y-1 hover:shadow-lg transition-all flex items-center gap-2" onclick="window.scrollTo({ top: document.getElementById('installation').getBoundingClientRect().top + window.scrollY - 96, behavior: 'smooth' })">
 <span class="material-symbols-outlined">extension</span>
                         Zu Edge hinzufügen
                     </button>
 </div>
 </div>
 <div class="relative tool-preview-container h-auto flex justify-center items-center md:scale-110 xl:scale-125 transition-transform py-8">
-<!-- High-Fidelity Representation matching popup.html and popup.css -->
-<div class="tool-preview-frame mx-auto scale-[0.6] sm:scale-75 md:scale-100" style="width: 100%; max-width: 680px; height: 600px; background: var(--bg); color: var(--text); font-family: Arial, sans-serif; overflow: hidden; display: flex; flex-direction: column; padding: 12px; border-radius: 12px; box-shadow: rgba(0, 0, 0, 0.15) 0px 12px 40px; border: 1px solid var(--border); position: relative; transform-origin: center top;">
-<header class="tool-header">
+<div class="tool-preview-frame tool-preview-interactive mx-auto scale-[0.6] sm:scale-75 md:scale-100" style="max-width: 680px; transform-origin: center top;">
+<input checked class="preview-radio" id="previewPresetToday" name="previewPreset" type="radio" />
+<input class="preview-radio" id="previewPresetRange" name="previewPreset" type="radio" />
+<input class="preview-radio" id="previewPresetAdvanced" name="previewPreset" type="radio" />
+<div class="tool-preview-inner">
+<div class="header">
 <div class="header-copy">
-<h1 class="">Jira Daily ToDo</h1>
-<p class="tool-subtitle">Überfällig bis +3 Tage, nach gemeinsamer Zeit sortiert</p>
+<h1>Jira Daily ToDo</h1>
+<p class="subtitle">Überfällig bis +3 Tage, nach gemeinsamer Zeit sortiert</p>
 </div>
-<div class="tool-actions">
-<button class="tool-btn">Einstellungen</button>
-<button class="tool-btn">Neu laden</button>
+<div class="header-actions">
+<button class="secondary-button" type="button">Einstellungen</button>
+<button class="secondary-button" type="button">Neu laden</button>
 </div>
-</header>
-<section class="tool-preset-bar">
-<button class="tool-preset-btn active">Heute</button>
-<button class="tool-preset-btn">-14 bis +3</button>
-<button class="tool-preset-btn">Erweitert</button>
-</section>
-<section class="tool-status-panel"><p class="" style="margin:0; font-weight:600; font-size:14px;">14 Tickets geladen</p><p class="" style="margin:4px 0 0; color:var(--text-muted); font-size:12px;">Ansicht: Heute | Basis-URL: https://support.wu.ac.at</p></section>
-<section class="tool-table-wrap"><table class="tool-table">
+</div>
+<div class="preset-bar">
+<label class="preset-button" for="previewPresetToday">Heute</label>
+<label class="preset-button" for="previewPresetRange">-14 bis +3</label>
+<label class="preset-button" for="previewPresetAdvanced">Erweitert</label>
+</div>
+<div class="advanced-panel">
+<div class="advanced-grid">
+<label class="range-control"><span>Starttage</span><strong>-14</strong><input type="range" min="-30" max="0" value="-14" /></label>
+<label class="range-control"><span>Endtage</span><strong>+3</strong><input type="range" min="0" max="14" value="3" /></label>
+</div>
+<div class="advanced-actions"><button class="secondary-button" type="button">Anwenden</button></div>
+</div>
+<div class="status-panel">
+<p class="preview-status status-today">12 Tickets geladen</p>
+<p class="preview-status status-range">29 Tickets geladen</p>
+<p class="preview-status status-advanced">Benutzerdefinierter Bereich aktiv</p>
+<p class="meta-text">Ansicht: Heute | Basis-URL: https://support.wu.ac.at</p>
+</div>
+<div class="table-wrap">
+<div class="table-viewport">
+<table>
 <thead>
 <tr>
-<th class="" style="width:40px; text-align:center;">Done</th>
-<th class="" style="width:140px;">Datum / Uhrzeit</th>
-<th class="" style="width:100px;">Ticket Type</th>
-<th class="" style="width:80px;">Key</th>
-<th class="" style="width:100px;">Status</th>
-<th class="" style="width:220px;">Summary</th>
+<th class="done-head">Done</th>
+<th>Datum / Uhrzeit</th>
+<th>Ticket Type</th>
+<th>Key</th>
+<th>Status</th>
+<th>Summary</th>
 </tr>
 </thead>
 <tbody>
-<!-- Row 1 -->
-<tr>
-<td style="text-align:center;"><div class="tool-checkbox"></div></td>
-<td class="" style="font-size:11px;">26.05.2026, 09:00<br><span class="" style="color:var(--text-muted);">Einsatzzeit</span></td>
-<td class=""><span class="tool-badge" style="background:#fce8e6; color:#b3261e;">Auftrag</span></td>
-<td class=""><a class="" href="#" style="color:#0052cc; font-weight:600;">IT-185...</a></td>
-<td class=""><span class="tool-badge" style="background:#fff7d6; color:#8d6b00;">Waiting f...</span></td>
-<td class="" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color:#0052cc;">Festnetztelefon übersie...</td>
+<tr class="todo-row">
+<td class="done-cell"><label class="done-toggle"><input class="done-checkbox" type="checkbox" /><span class="done-ui"></span></label></td>
+<td class="time-cell"><span class="time-main">09.06.2026, 11:30</span><span class="source-note">Assembly Time Start<br>(Aufbau)</span></td>
+<td class="ticket-type-cell"><span class="ticket-type-badge ticket-type-red">Event - Aufbau</span></td>
+<td class="key-cell"><a class="key-link" href="#">IT-186421</a></td>
+<td class="status-cell"><span class="status-badge status-upcoming">On Hold</span></td>
+<td class="summary-cell"><a class="row-link" href="#">Betriebsversammlung Aula Nord</a></td>
 </tr>
-<!-- Row 2 -->
-<tr>
-<td style="text-align:center;"><div class="tool-checkbox"></div></td>
-<td class="" style="font-size:11px;">26.05.2026, 09:00<br><span class="" style="color:var(--text-muted);">Start Time</span></td>
-<td class=""><span class="tool-badge" style="background:#e9edf2; color:#5e6d84;">ReserWUtion</span></td>
-<td class=""><a class="" href="#" style="color:#0052cc; font-weight:600;">IT-186...</a></td>
-<td class=""><span class="tool-badge" style="background:#fff7d6; color:#8d6b00;">Waiting f...</span></td>
-<td class="" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color:#0052cc;">Leihgeräte angefragt | ...</td>
+<tr class="todo-row">
+<td class="done-cell"><label class="done-toggle"><input class="done-checkbox" type="checkbox" /><span class="done-ui"></span></label></td>
+<td class="time-cell"><span class="time-main">09.06.2026, 11:45</span><span class="source-note">Einsatzzeit</span></td>
+<td class="ticket-type-cell"><span class="ticket-type-badge ticket-type-red">Auftrag</span></td>
+<td class="key-cell"><a class="key-link" href="#">IT-186438</a></td>
+<td class="status-cell"><span class="status-badge status-upcoming">On Hold</span></td>
+<td class="summary-cell"><a class="row-link" href="#">Beamer-Check für Seminarraum D4</a></td>
 </tr>
-<!-- Row 3 (Checked) -->
-<tr style="background: #f7fffa; opacity: 0.7;">
-<td style="text-align:center;"><div class="tool-checkbox checked"></div></td>
-<td class="" style="font-size:11px; text-decoration: line-through;">26.05.2026, 09:45<br><span class="" style="color:var(--text-muted);">Assembly Time Start</span></td>
-<td class=""><span class="tool-badge" style="background:#fce8e6; color:#b3261e; opacity: 0.6;">Event - Aufbau</span></td>
-<td class="" style="text-decoration: line-through;"><span class="" style="color:var(--text-muted); font-weight:600;">IT-184...</span></td>
-<td class=""><span class="tool-badge" style="background:#ffdad6; color:#ba1a1a; opacity: 0.6;">On Hold</span></td>
-<td class="" style="text-decoration: line-through; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #42526e;">64239 - Promotio sub a...</td>
+<tr class="todo-row">
+<td class="done-cell"><label class="done-toggle"><input class="done-checkbox" type="checkbox" /><span class="done-ui"></span></label></td>
+<td class="time-cell"><span class="time-main">09.06.2026, 12:00</span><span class="source-note">Dismantling Time<br>(Abbau)</span></td>
+<td class="ticket-type-cell"><span class="ticket-type-badge ticket-type-red">Event - Abbau</span></td>
+<td class="key-cell"><a class="key-link" href="#">IT-185908</a></td>
+<td class="status-cell"><span class="status-badge status-upcoming">On Hold</span></td>
+<td class="summary-cell"><a class="row-link" href="#">Leadership-Workshop im TC.4.01</a></td>
 </tr>
-<!-- Row 4 -->
-<tr>
-<td style="text-align:center;"><div class="tool-checkbox"></div></td>
-<td class="" style="font-size:11px;">26.05.2026, 11:00<br><span class="" style="color:var(--text-muted);">Einsatzzeit</span></td>
-<td class=""><span class="tool-badge" style="background:#fce8e6; color:#b3261e;">Auftrag</span></td>
-<td class=""><a class="" href="#" style="color:#0052cc; font-weight:600;">IT-185...</a></td>
-<td class=""><span class="tool-badge" style="background:#fff7d6; color:#8d6b00;">Waiting f...</span></td>
-<td class="" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color:#0052cc;">Ausstattung neuer Räu...</td>
+<tr class="todo-row">
+<td class="done-cell"><label class="done-toggle"><input class="done-checkbox" type="checkbox" /><span class="done-ui"></span></label></td>
+<td class="time-cell"><span class="time-main">09.06.2026, 12:20</span><span class="source-note">Start Time</span></td>
+<td class="ticket-type-cell"><span class="ticket-type-badge ticket-type-gray">ReserWUtion</span></td>
+<td class="key-cell"><a class="key-link" href="#">IT-184772</a></td>
+<td class="status-cell"><span class="status-badge status-upcoming">Waiting f…</span></td>
+<td class="summary-cell"><a class="row-link" href="#">Leihgeräte für Abendveranstaltung</a></td>
 </tr>
-<!-- Row 5 -->
-<tr>
-<td style="text-align:center;"><div class="tool-checkbox"></div></td>
-<td class="" style="font-size:11px;">26.05.2026, 13:40<br><span class="" style="color:var(--text-muted);">Assembly Time Start</span></td>
-<td class=""><span class="tool-badge" style="background:#fce8e6; color:#b3261e;">Event - Aufbau</span></td>
-<td class=""><a class="" href="#" style="color:#0052cc; font-weight:600;">IT-186...</a></td>
-<td class=""><span class="tool-badge" style="background:#fff7d6; color:#8d6b00;">On Hold</span></td>
-<td class="" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color:#0052cc;">64010 - 64010 - WU Imp...</td>
+<tr class="todo-row">
+<td class="done-cell"><label class="done-toggle"><input class="done-checkbox" type="checkbox" /><span class="done-ui"></span></label></td>
+<td class="time-cell"><span class="time-main">09.06.2026, 16:00</span><span class="source-note">Dismantling Time<br>(Abbau)</span></td>
+<td class="ticket-type-cell"><span class="ticket-type-badge ticket-type-red">Event - Abbau</span></td>
+<td class="key-cell"><a class="key-link" href="#">IT-186117</a></td>
+<td class="status-cell"><span class="status-badge status-upcoming">On Hold</span></td>
+<td class="summary-cell"><a class="row-link" href="#">Abbau nach Hausmesse im Festsaal</a></td>
+</tr>
+<tr class="todo-row">
+<td class="done-cell"><label class="done-toggle"><input class="done-checkbox" type="checkbox" /><span class="done-ui"></span></label></td>
+<td class="time-cell"><span class="time-main">09.06.2026, 17:00</span><span class="source-note">Assembly Time Start<br>(Aufbau)</span></td>
+<td class="ticket-type-cell"><span class="ticket-type-badge ticket-type-red">Event - Aufbau</span></td>
+<td class="key-cell"><a class="key-link" href="#">IT-186290</a></td>
+<td class="status-cell"><span class="status-badge status-upcoming">On Hold</span></td>
+<td class="summary-cell"><a class="row-link" href="#">Vortrag im Audimax mit Techniksetup</a></td>
+</tr>
+<tr class="todo-row">
+<td class="done-cell"><label class="done-toggle"><input class="done-checkbox" type="checkbox" /><span class="done-ui"></span></label></td>
+<td class="time-cell"><span class="time-main">09.06.2026, 18:30</span><span class="source-note">Dismantling Time<br>(Abbau)</span></td>
+<td class="ticket-type-cell"><span class="ticket-type-badge ticket-type-red">Event - Abbau</span></td>
+<td class="key-cell"><a class="key-link" href="#">IT-184993</a></td>
+<td class="status-cell"><span class="status-badge status-upcoming">On Hold</span></td>
+<td class="summary-cell"><a class="row-link" href="#">Rückbau nach Winterevent im LC</a></td>
+</tr>
+<tr class="todo-row">
+<td class="done-cell"><label class="done-toggle"><input class="done-checkbox" type="checkbox" checked /><span class="done-ui"></span></label></td>
+<td class="time-cell"><span class="time-main">10.06.2026, 08:15</span><span class="source-note">Einsatzzeit</span></td>
+<td class="ticket-type-cell"><span class="ticket-type-badge ticket-type-red">Auftrag</span></td>
+<td class="key-cell"><a class="key-link" href="#">IT-186502</a></td>
+<td class="status-cell"><span class="status-badge status-normal">In Arbeit</span></td>
+<td class="summary-cell"><a class="row-link" href="#">Audio-Check für Morgenmeeting</a></td>
+</tr>
+<tr class="todo-row is-notification-highlight">
+<td class="done-cell"><label class="done-toggle"><input class="done-checkbox" type="checkbox" /><span class="done-ui"></span></label></td>
+<td class="time-cell"><span class="time-main">10.06.2026, 09:00</span><span class="source-note">Assembly Time Start<br>(Aufbau)</span></td>
+<td class="ticket-type-cell"><span class="ticket-type-badge ticket-type-red">Event - Aufbau</span></td>
+<td class="key-cell"><a class="key-link" href="#">IT-186544</a></td>
+<td class="status-cell"><span class="status-badge status-normal">Neu</span></td>
+<td class="summary-cell"><a class="row-link" href="#">Technikvorbereitung für Infotag</a></td>
 </tr>
 </tbody>
-</table></section>
+</table>
 </div>
+</div>
+</div>
+</div></div>
 </div>
 </section>
 <!-- Features Bento Grid -->
 <section class="py-section-gap" id="features">
-<div class="text-center mb-16">
-<h2 class="font-headline-lg text-4xl text-primary mb-4">Entwickelt für Effizienz</h2>
-<p class="font-body-lg text-on-surface-variant">Schluss mit dem ewigen Tab-Hopping in Jira.</p>
+<div class="text-center mb-16 max-w-3xl mx-auto">
+<h2 class="font-headline-lg text-4xl text-primary mb-4">Arbeitsvorteile im Alltag</h2>
+<p class="font-body-lg text-on-surface-variant">Die Extension ist für IT-Assistants an der WU Wien gedacht und löst die häufigsten Reibungsverluste im täglichen Jira-Handling direkt im Browser.</p>
 </div>
-<div class="bento-grid">
-<div class="col-span-12 md:col-span-7 glass-card rounded-lg p-8 flex flex-col justify-between hover:border-primary/30 transition-colors group">
-<div class="space-y-4">
-<div class="w-12 h-12 rounded-xl bg-primary-fixed flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
-<span class="material-symbols-outlined">schedule</span>
+<div class="feature-grid">
+<div class="feature-card">
+<div class="feature-card-icon"><span class="material-symbols-outlined">schedule</span></div>
+<p class="feature-kicker">Mehrere Zeitfelder</p>
+<h3 class="font-headline-sm text-primary mb-3">Eine chronologische Ansicht statt mehrerer Jira-Logiken</h3>
+<p class="font-body-md text-on-surface-variant">Assembly Time Start, Dismantling Time, Einsatzzeit und Start Time werden in einer gemeinsamen Reihenfolge angezeigt. So sehen IT-Assistants sofort, was heute als Nächstes ansteht.</p>
+<p class="font-body-sm text-on-surface-variant">Das reduziert Kontextwechsel zwischen Filtern, Tickettypen und unterschiedlichen Feldbedeutungen.</p>
 </div>
-<h3 class="font-headline-md">Gemeinsame Zeitlogik</h3>
-<p class="font-body-md text-on-surface-variant max-w-md">Die Extension ordnet Tickets basierend auf der Fälligkeit, die für ITAs relevant ist. So kann kein Ticket mehr verpasst werden.</p>
+<div class="feature-card">
+<div class="feature-card-icon"><span class="material-symbols-outlined">today</span></div>
+<p class="feature-kicker">Schneller Fokus</p>
+<h3 class="font-headline-sm text-primary mb-3">Heute sofort im Blick, Bereich bei Bedarf per Klick</h3>
+<p class="font-body-md text-on-surface-variant">Die Presets für Heute, -14 bis +3 und den erweiterten Bereich decken den typischen Arbeitsalltag im ITA-Team ab. Dadurch ist die passende Sicht ohne JQL-Nacharbeit direkt verfügbar.</p>
+<p class="font-body-sm text-on-surface-variant">Gerade für spontane Tagesplanung ist das schneller als zwischen mehreren gespeicherten Filtern zu wechseln.</p>
 </div>
-<img class="mt-8 rounded-md h-48 object-cover w-full" data-alt="A clean, high-angle close-up of a digital designer's desk workspace with a focused mood. A modern laptop displays a sophisticated project management dashboard with calming blue and white accents. The lighting is bright and airy, reflecting a professional light-mode aesthetic. Soft shadows and a minimalist background emphasize clarity and organization in a corporate setting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDbsVZJ7Ufs1vVEPysJpNLkzPqapvc-Rwd53H9V4eN_v1oePYCSwdhSL9Yfne8Pfst_3NpoiS9P9IGI3_OAo6TCPQ4ZYWDZJt7dYkUupauQv_uo02SAq0KVIf9Kr29WtHFHAQ6zf490MEkk_jZWDp55ZbmCYCFrk98aqevgOHozsLYQWPnNwrmevBOgcuZwe4I-yl5A8G-imeN3ILq5PMca9sjqHoAAz3kBflkDW8oWJv90FpnKY6uLe5Z8Qv_7AqG1r3EUI6MIim8">
+<div class="feature-card">
+<div class="feature-card-icon"><span class="material-symbols-outlined">notifications_active</span></div>
+<p class="feature-kicker">Neue Tickets</p>
+<h3 class="font-headline-sm text-primary mb-3">Benachrichtigungen führen direkt zum relevanten Eintrag</h3>
+<p class="font-body-md text-on-surface-variant">Neue Tickets im Heute-Preset lösen Badge, Desktop-Benachrichtigung und Hervorhebung im Popup aus. Damit geht ein neuer Eintrag nicht mehr zwischen offenen Aufgaben unter.</p>
+<p class="font-body-sm text-on-surface-variant">Die aktuelle Version hebt genau diesen schnellen Direktzugriff zusätzlich durch klickbare Notifications hervor.</p>
 </div>
-<div class="col-span-12 md:col-span-5 bg-primary text-on-primary rounded-lg p-8 flex flex-col justify-center gap-4 relative overflow-hidden group">
-<div class="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-16 -mt-16 group-hover:scale-150 transition-transform duration-700"></div>
-<div class="w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center">
-<span class="material-symbols-outlined">security</span>
-</div>
-<h3 class="font-headline-md">Lokaler Arbeitsmodus</h3>
-<p class="font-body-md text-on-primary-container">Ihre Daten verlassen niemals Ihren Browser. Die Extension agiert als lokaler Proxy für Ihre Jira-Schnittstelle.</p>
-</div>
-<div class="col-span-12 bg-tertiary text-on-tertiary rounded-lg p-8 flex flex-col justify-between hover:brightness-105 transition-all">
-<div class="space-y-4">
-<div class="w-12 h-12 rounded-xl bg-on-tertiary-container flex items-center justify-center text-tertiary">
-<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">notifications_active</span>
-</div>
-<h3 class="font-headline-md">Benachrichtigungen</h3>
-<p class="font-body-md opacity-90">Erhalten Sie Desktop-Notifications, sobald ein neues Ticket in Ihrer Heute-Ansicht erscheint.</p>
-</div>
+<div class="feature-card">
+<div class="feature-card-icon"><span class="material-symbols-outlined">settings</span></div>
+<p class="feature-kicker">Anpassbar</p>
+<h3 class="font-headline-sm text-primary mb-3">Konfiguration für euren WU-Jira-Stand statt starrem Setup</h3>
+<p class="font-body-md text-on-surface-variant">Basis-URL, Search Endpoint, Feld-IDs, Feldlabels und JQL-Presets lassen sich über die Options-Seite anpassen. So bleibt das Tool technisch präzise, ohne dass Änderungen direkt in Jira nötig sind.</p>
+<p class="font-body-sm text-on-surface-variant">Das macht die Extension robust für unterschiedliche Feldkonfigurationen und künftige Erweiterungen.</p>
 </div>
 </div>
 </section>
@@ -429,7 +975,7 @@
 <div>
 <h2 class="font-headline-lg text-3xl mb-6">Sofort startklar.</h2>
 <p class="font-body-lg text-on-surface-variant mb-8">
-                        Laden Sie das vorkonfigurierte Paket herunter und starten Sie in wenigen Minuten mit einem aufgeräumten Workspace.
+                        Laden Sie die vorkonfigurierte ZIP-Datei herunter, entpacken Sie sie einmalig in einen festen Ordner und aktivieren Sie die Erweiterung anschließend in Edge. So ist das Tool in wenigen Minuten einsatzbereit.
                     </p>
 <div class="space-y-4">
 <div class="flex items-center gap-4 p-4 rounded-xl border border-outline-variant/40 bg-surface">
@@ -442,7 +988,7 @@
 </div>
 <div class="flex items-center gap-3 text-body-md text-on-surface-variant px-2">
 <span class="material-symbols-outlined text-tertiary text-lg">verified</span>
-                            MD5 Checksum: a1b2c3d4e5f6g7h8...
+                            Vorkonfiguriert für Edge und WU Jira Data Center · Lokale Nutzung im Browser
                         </div>
 </div>
 </div>
@@ -463,7 +1009,7 @@
 </li>
 <li class="flex items-center gap-3">
 <span class="w-2 h-2 rounded-full bg-primary"></span>
-<span class="font-body-md"><b>Dark Mode Support:</b> Augenfreundliche Oberfläche</span>
+<span class="font-body-md"><b>Options-Seite:</b> Basis-URL, Feld-IDs und Presets anpassbar</span>
 </li>
 </ul>
 </div>
@@ -471,71 +1017,74 @@
 </section>
 <!-- Installation Section -->
 <section class="py-section-gap" id="installation">
-<h2 class="font-headline-lg text-center mb-12">Installation in Edge</h2>
+<div class="text-center mb-14 max-w-3xl mx-auto">
+<h2 class="font-headline-lg text-4xl text-primary mb-4">Download & Einrichtung in Edge</h2>
+<p class="font-body-lg text-on-surface-variant">In wenigen Schritten lokal in Edge laden und sofort verwenden.</p>
+</div>
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 <!-- Step 1 -->
 <div class="interactive-row p-6 bg-white rounded-lg border border-outline-variant/20 flex flex-col gap-4">
 <span class="w-10 h-10 rounded-full bg-secondary-container text-primary flex items-center justify-center font-bold">1</span>
-<h4 class="font-headline-sm">ZIP Entpacken</h4>
-<p class="text-body-md text-on-surface-variant">Entpacken Sie das heruntergeladene Archiv in einen permanenten Ordner auf Ihrer Festplatte.</p>
+<h4 class="font-headline-sm">1. ZIP-Datei herunterladen und entpacken</h4>
+<p class="text-body-md text-on-surface-variant timeline-copy"><a class="install-link" href="https://jonistrick.github.io/ita-daily-todo/jira-daily-todo-6.1.2.zip">ZIP-Datei herunterladen</a> und in einen <span class="install-emphasis">festen Ordner</span> entpacken.</p>
 </div>
 <!-- Step 2 -->
 <div class="interactive-row p-6 bg-white rounded-lg border border-outline-variant/20 flex flex-col gap-4">
 <span class="w-10 h-10 rounded-full bg-secondary-container text-primary flex items-center justify-center font-bold">2</span>
-<h4 class="font-headline-sm">Erweiterungen öffnen</h4>
-<p class="text-body-md text-on-surface-variant">Geben Sie <code>edge://extensions</code> in die Adresszeile ein oder öffnen Sie das Menü.</p>
+<h4 class="font-headline-sm">2. Edge-Erweiterungen öffnen</h4>
+<p class="text-body-md text-on-surface-variant timeline-copy">Öffnen Sie in Edge <span class="install-code">edge://extensions</span><button aria-label="Zwischenablage kopieren" class="copy-chip" title="Kopieren" type="button" onclick="copyInstallCode('edge://extensions', this)"><span class="material-symbols-outlined">content_copy</span></button></p>
 </div>
 <!-- Step 3 -->
 <div class="interactive-row p-6 bg-white rounded-lg border border-outline-variant/20 flex flex-col gap-4">
 <span class="w-10 h-10 rounded-full bg-secondary-container text-primary flex items-center justify-center font-bold">3</span>
-<h4 class="font-headline-sm">Entwicklermodus</h4>
-<p class="text-body-md text-on-surface-variant">Aktivieren Sie den Schalter "Entwicklermodus" in der linken unteren Ecke.</p>
+<h4 class="font-headline-sm">3. Entwicklermodus aktivieren</h4>
+<p class="text-body-md text-on-surface-variant timeline-copy">Aktivieren Sie den Schalter <span class="install-emphasis">„Entwicklermodus“</span> an der <span class="install-emphasis">linken Seite</span>.</p>
 </div>
 <!-- Step 4 -->
 <div class="interactive-row p-6 bg-white rounded-lg border border-outline-variant/20 flex flex-col gap-4">
 <span class="w-10 h-10 rounded-full bg-secondary-container text-primary flex items-center justify-center font-bold">4</span>
-<h4 class="font-headline-sm">Entpackte laden</h4>
-<p class="text-body-md text-on-surface-variant">Klicken Sie auf "Entpackte Erweiterung laden" in der oberen Leiste.</p>
+<h4 class="font-headline-sm">4. Entpackte Erweiterung laden</h4>
+<p class="text-body-md text-on-surface-variant">Klicken Sie oben auf <span class="install-emphasis">„Entpackte Erweiterung laden“</span>.</p>
 </div>
 <!-- Step 5 -->
 <div class="interactive-row p-6 bg-white rounded-lg border border-outline-variant/20 flex flex-col gap-4">
 <span class="w-10 h-10 rounded-full bg-secondary-container text-primary flex items-center justify-center font-bold">5</span>
-<h4 class="font-headline-sm">Ordner wählen</h4>
-<p class="text-body-md text-on-surface-variant">Wählen Sie den entpackten Ordner (den, der die manifest.json enthält) aus.</p>
+<h4 class="font-headline-sm">5. Richtigen Ordner auswählen</h4>
+<p class="text-body-md text-on-surface-variant">Wählen Sie den Ordner mit der Datei <span class="install-emphasis">manifest.json</span>.</p>
 </div>
 <!-- Step 6 -->
 <div class="interactive-row p-6 bg-white rounded-lg border border-outline-variant/20 flex flex-col gap-4">
 <span class="w-10 h-10 rounded-full bg-secondary-container text-primary flex items-center justify-center font-bold">6</span>
-<h4 class="font-headline-sm">Anpinnen</h4>
-<p class="text-body-md text-on-surface-variant">Klicken Sie auf das Puzzleteil-Symbol in Edge und pinnen Sie das Tool für schnellen Zugriff an.</p>
+<h4 class="font-headline-sm">6. Erweiterung anpinnen</h4>
+<p class="text-body-md text-on-surface-variant">Pinnen Sie die Erweiterung über das Puzzleteil-Symbol für den schnellen Zugriff an.</p>
 </div>
 </div>
 </section>
 <!-- Updates Timeline -->
 <section class="py-section-gap mb-24" id="updates">
 <h2 class="font-headline-lg text-3xl mb-12 text-center">Version History</h2>
-<div class="max-w-3xl mx-auto relative pl-12">
-<div class="timeline-line"></div>
+<div class="max-w-3xl mx-auto relative pl-12 timeline-wrapper">
+<div class="timeline-line" aria-hidden="true"></div>
 <!-- v0.6.2 -->
-<div class="relative mb-12">
-<div class="absolute -left-[41px] top-1 w-8 h-8 rounded-full bg-primary border-4 border-white flex items-center justify-center text-white">
+<div class="timeline-item mb-12">
+<div class="absolute -left-[33px] top-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-primary border-4 border-white flex items-center justify-center text-white z-10">
 <span class="material-symbols-outlined text-xs" style="font-variation-settings: 'FILL' 1;">check</span>
 </div>
-<div class="bg-white p-6 rounded-lg border border-outline-variant/30 custom-shadow">
-<div class="flex justify-between items-center mb-3">
-<h3 class="font-headline-sm text-primary">Version 0.6.2 (Latest)</h3>
+<div class="timeline-card p-7 md:p-8 custom-shadow transition-all duration-200">
+<div class="flex flex-col gap-2 md:flex-row md:justify-between md:items-center mb-3">
+<h3 class="font-headline-sm text-primary"><a class="hover:underline" href="https://jonistrick.github.io/ita-daily-todo/jira-daily-todo-6.1.2.zip">Version 0.6.2 (Latest)</a></h3>
 <span class="text-label-sm text-on-surface-variant">Mai 2026</span>
 </div>
-<p class="text-body-md text-on-surface-variant">Benachrichtigungen wurden klickbar, sodass das Tool direkt geöffnet und der neue Eintrag schneller gefunden werden kann.</p>
+<p class="text-body-md text-on-surface-variant">Wichtige Bugfixes verbessern die Anzeige und Funktion der klickbaren Benachrichtigungen für einen zuverlässigeren Direktzugriff.</p>
 </div>
 </div>
 <!-- v0.6.1 -->
-<div class="relative mb-12">
-<div class="absolute -left-[41px] top-1 w-8 h-8 rounded-full bg-white border-2 border-primary-container flex items-center justify-center text-primary-container">
+<div class="timeline-item mb-12">
+<div class="absolute -left-[33px] top-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white border-2 border-primary-container flex items-center justify-center text-primary-container z-10">
 <span class="material-symbols-outlined text-xs">history</span>
 </div>
-<div class="bg-white p-6 rounded-lg border border-outline-variant/30 opacity-80">
-<div class="flex justify-between items-center mb-3">
+<div class="timeline-card timeline-card-muted p-7 md:p-8 transition-all duration-200">
+<div class="flex flex-col gap-2 md:flex-row md:justify-between md:items-center mb-3">
 <h3 class="font-headline-sm">Version 0.6.1</h3>
 <span class="text-label-sm text-on-surface-variant">April 2026</span>
 </div>
@@ -543,12 +1092,12 @@
 </div>
 </div>
 <!-- v0.6.0 -->
-<div class="relative">
-<div class="absolute -left-[41px] top-1 w-8 h-8 rounded-full bg-white border-2 border-outline-variant flex items-center justify-center text-outline-variant">
+<div class="timeline-item">
+<div class="absolute -left-[33px] top-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white border-2 border-outline-variant flex items-center justify-center text-outline-variant z-10">
 <span class="material-symbols-outlined text-xs">history</span>
 </div>
-<div class="bg-white p-6 rounded-lg border border-outline-variant/30 opacity-60">
-<div class="flex justify-between items-center mb-3">
+<div class="timeline-card timeline-card-muted p-7 md:p-8 transition-all duration-200">
+<div class="flex flex-col gap-2 md:flex-row md:justify-between md:items-center mb-3">
 <h3 class="font-headline-sm">Version 0.6.0</h3>
 <span class="text-label-sm text-on-surface-variant">März 2026</span>
 </div>
@@ -575,11 +1124,14 @@
 </div>
 </footer>
 <script>
-        // Smooth scroll for nav links
+        const scrollOffset = 96;
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
+                const target = document.querySelector(this.getAttribute('href'));
+                if (!target) return;
                 e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                window.scrollTo({
+                    top: target.getBoundingClientRect().top + window.scrollY - scrollOffset,
                     behavior: 'smooth'
                 });
             });
@@ -587,4 +1139,44 @@
     </script>
 
 
+<script>
+function copyInstallCode(value, button) {
+    const original = button.innerHTML;
+    const setCopied = () => {
+        button.innerHTML = '<span class="material-symbols-outlined">check</span>';
+        button.classList.add('is-copied');
+        window.setTimeout(() => {
+            button.innerHTML = original;
+            button.classList.remove('is-copied');
+        }, 1400);
+    };
+
+    if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(value).then(setCopied).catch(() => fallbackCopy(value, button, original));
+        return;
+    }
+    fallbackCopy(value, button, original);
+}
+
+function fallbackCopy(value, button, original) {
+    const helper = document.createElement('textarea');
+    helper.value = value;
+    helper.setAttribute('readonly', '');
+    helper.style.position = 'absolute';
+    helper.style.left = '-9999px';
+    document.body.appendChild(helper);
+    helper.select();
+    try {
+        document.execCommand('copy');
+        button.innerHTML = '<span class="material-symbols-outlined">check</span>';
+        button.classList.add('is-copied');
+        window.setTimeout(() => {
+            button.innerHTML = original;
+            button.classList.remove('is-copied');
+        }, 1400);
+    } finally {
+        document.body.removeChild(helper);
+    }
+}
+</script>
 </body></html>
